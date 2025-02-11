@@ -14,6 +14,7 @@ def callback():
     token_info = sp_oauth.get_access_token(code) 
     session['token_info'] = token_info
     return redirect(url_for('home.home')) 
+@auth_bp.route('/logout')
 def logout():
     session.clear() 
     return redirect(url_for('auth.login')) 
