@@ -1,8 +1,8 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-SPOTIFY_CLIENT_ID = "51732c4254124416b138a4114f3399f9"
-SPOTIFY_CLIENT_SECRET = "71185d62c08749e6ab66a9e42507b90a"
+SPOTIFY_CLIENT_ID = "8ef11c0c17b949c2b918993d3333d6b6"
+SPOTIFY_CLIENT_SECRET = "754519f617294427bbc65f7a5e078e5f"
 SPOTIFY_REDIRECT_URI = "https://curly-invention-q77qrqpr7r5vcqpp-5000.app.github.dev/callback" 
 
 sp_oauth = SpotifyOAuth(

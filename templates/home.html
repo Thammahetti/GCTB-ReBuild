@@ -230,7 +230,7 @@
 
 <body>
     <div class="container">
-        <a href="{{ url_for('logout') }}" style="color: #1db954; font-size: 1.2em;">Logout</a>
+        <a href="{{ url_for('auth.logout') }}" style="color: #1db954; font-size: 1.2em;">Logout</a>
         <h1>Benvenuto su <span>TJIFY</span>!</h1>
 
         {% if user_info['images'] %}

@@ -11,9 +11,12 @@ def login():
 @auth_bp.route('/callback')
 def callback():
     code = request.args.get('code')
-    token_info = sp_oauth.get_access_token(code) 
-    session['token_info'] = token_info
-    return redirect(url_for('home.home')) 
+    if code:
+        token_info = sp_oauth.get_access_token(code)
+        session['token_info'] = token_info
+        return redirect(url_for('home.home'))
+    return "Errore nella richiesta del codice di autorizzazione."
+
 @auth_bp.route('/logout')
 def logout():
     session.clear() 

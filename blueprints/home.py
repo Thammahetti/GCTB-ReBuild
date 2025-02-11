@@ -4,7 +4,7 @@ from services.spotify_oauth import sp_oauth, get_spotify_object
 
 home_bp = Blueprint('home', __name__) 
 
-@home_bp.route('/')
+@home_bp.route('/home')
 def home():
     token_info = session.get('token_info', None)
     if not token_info:
@@ -14,6 +14,7 @@ def home():
     user_info = sp.current_user()
     playlists = sp.current_user_playlists() 
     playlists_info = playlists['items'] 
+    
     return render_template('home.html', user_info=user_info, playlists=playlists_info) 
 
 @home_bp.route('/playlist/<playlist_id>')
