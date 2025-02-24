@@ -8,9 +8,7 @@ def login():
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
 
-@auth_bp.route('/')
-def index():
-    return render_template('index.html') 
+
 
 @auth_bp.route('/callback')
 def callback():
