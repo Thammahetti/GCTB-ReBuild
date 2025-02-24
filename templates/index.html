@@ -1,4 +1,7 @@
-
+<!-- main.page.html -->
 {% extends "nav.html" %}
-<a href="{{ url_for('auth.login') }}" style="color: #1db954; font-size: 1.2em;">log</a>
 
+{% block content %}
+  <h1>Welcome to the Main Page!</h1>
+  <p>Here's the main content of your page.</p>
+{% endblock %}

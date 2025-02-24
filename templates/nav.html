@@ -1,1 +1,17 @@
-<nav></nav>ciccia
+<!-- nav.html -->
+<html>
+  <head>
+    <title>My Site</title>
+  </head>
+  <body>
+   
+    <nav>
+  
+      <a href="{{ url_for('auth.login') }}">Log In</a>
+   
+    </nav>
+
+    
+    {% block content %}{% endblock %}
+  </body>
+</html>
