@@ -1,0 +1,59 @@
+body {
+    background: linear-gradient(135deg, #1e1e2f, #3a3a6e);
+    color: white;
+}
+.navbar {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.navbar-brand img {
+    height: 40px;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+.navbar-brand:hover img {
+    transform: scale(1.1);
+}
+.search-box-container {
+    width: 0;
+    max-height: 50px;
+    overflow: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.search-box-container.active {
+    width: 100%;
+    opacity: 1;
+}
+.search-box {
+    width: 100%;
+    border-radius: 20px;
+}
+.btn-login {
+    background: none;
+    border: none;
+    padding: 0;
+}
+.btn-login img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+}
+.btn-login img:hover {
+    transform: scale(1.1);
+}
