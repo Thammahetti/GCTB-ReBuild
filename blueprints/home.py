@@ -27,3 +27,21 @@ def playlist_details(playlist_id):
     brani = sp.playlist_items(playlist_id)
     brani_specifici = brani['items']
     return render_template('brani.html', brani=brani_specifici)
+
+@home_bp.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q')  
+    token_info = session.get('token_info', None)
+    
+    if not token_info:
+        return redirect(url_for('auth.login'))
+
+    sp = get_spotify_object(token_info)
+    
+    if query:
+        results = sp.search(q=query, type='track', limit=10)
+        tracks = results['tracks']['items']
+    else:
+        tracks = []  
+
+    return render_template('index.html', tracks=tracks, query=query)

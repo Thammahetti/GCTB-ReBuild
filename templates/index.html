@@ -8,162 +8,30 @@
   <div class="main-content">  
     </div><h1>Welcome to the Main Page!</h1>
     <p>Here's the main content of your page.</p>    
-    <div class="spotify-playlists">
-      <h2>Playlist da scoprire</h2>
+    {% if query %}
+    <h2>Risultati per "{{ query }}"</h2>
+    {% endif %}
 
-      <div class="list">
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
     
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="spotify-playlists">
-      <h2>I più grandi successi di oggi</h2>
-      <div class="list">
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-     
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-        
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="spotify-playlists">
-      <h2>Mood</h2>
-      <div class="list">
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
     
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
+    <div class="spotify-playlists">
+      <div class="list">
+          {% for track in tracks %}
+          <div class="item">
+              <img src="{{ track['album']['images'][0]['url'] }}" alt="{{ track['name'] }}">
+              <div class="play">
+                  <a href="{{ track['external_urls']['spotify'] }}" target="_blank">
+                      <span class="fa fa-play"></span>
+                  </a>
+              </div>
+              <h4>{{ track['name'] }}</h4>
+              <p>{{ track['artists'][0]['name'] }}</p>
           </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
-
-        <div class="item">
-          <img src="https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-dimensions/2500?v=v2&px=-1" />
-          <div class="play">
-            <span class="fa fa-play"></span>
-          </div>
-          <h4>.</h4>
-          <p>.</p>
-        </div>
+          {% endfor %}
       </div>
-    </div>
   </div>
+  
   <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
 </body>
 {% endblock %}

@@ -21,9 +21,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
 
             <div class="search-box-container" id="searchBoxContainer">
-                <form class="d-flex w-100">
-                    <input class="form-control search-box me-2" type="search" placeholder="Search..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('home.search') }}" method="GET">
+                    <input type="text" name="q" placeholder="Cerca brani..." required>
+                    <button type="submit">Cerca</button>
                 </form>
             </div>
 
@@ -35,7 +35,9 @@
                             <img src="https://cdn-icons-png.freepik.com/512/8742/8742495.png" alt="Profile" class="rounded-circle" width="40">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('home.home') }}">Profilo</a></li>
                             <li><a class="dropdown-item" href="#">Settings</a></li>
+                            
                             <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
                         </ul>
                     {% else %}
