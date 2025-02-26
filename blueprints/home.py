@@ -1,9 +1,16 @@
 from flask import Blueprint, redirect, request, url_for, session, render_template
 import spotipy
 from services.spotify_oauth import sp_oauth, get_spotify_object
+from spotipy.oauth2 import SpotifyClientCredentials
 
 home_bp = Blueprint('home', __name__) 
 
+credenziali = SpotifyClientCredentials(
+    client_id="4a2cbb97c5504b7dbe7a2efc0c840bf2", 
+    client_secret="0fb3aa1797704da5925b662d34732f95"
+)
+
+senza_login = spotipy.Spotify(client_credentials_manager=credenziali)
 @home_bp.route('/home')
 def home():
     token_info = session.get('token_info', None)
@@ -31,16 +38,10 @@ def playlist_details(playlist_id):
 @home_bp.route('/search', methods=['GET'])
 def search():
     query = request.args.get('q')  
-    token_info = session.get('token_info', None)
-    
-    if not token_info:
-        return redirect(url_for('auth.login'))
-
-    sp = get_spotify_object(token_info)
     
     if query:
-        results = sp.search(q=query, type='track', limit=10)
-        tracks = results['tracks']['items']
+         results = senza_login.search(q=query, type='track', limit=10)
+         tracks = results['tracks']['items']
     else:
         tracks = []  
 

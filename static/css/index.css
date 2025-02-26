@@ -1,30 +1,87 @@
-.main-content {
-  margin: 0 auto;
+/* Modal background */
+.track-popup {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Pop-up content */
+.track-popup-content {
+  background-color: #fff;
   padding: 20px;
-  max-width: 1200px; /* Optional: to set a max width for content */
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-.spotify-playlists {
-  padding: 20px 40px;
+/* Track image inside the modal */
+.track-popup-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 15px;
 }
 
-.spotify-playlists h2 {
-  color: #ffffff;
-  font-size: 22px;
-  margin-bottom: 20px;
-  text-align: center; /* Center the header */
+/* Pop-up title and details */
+#popup-details h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
+#popup-details p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+#popup-spotify-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #1DB954; /* Spotify green */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+#popup-spotify-link:hover {
+  background-color: #1aa34a; /* Darker green on hover */
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Item styles */
 .spotify-playlists .list {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto; /* Allow horizontal scrolling if content exceeds container width */
-  justify-content: center; /* Center items horizontally */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 items per row */
+  gap: 20px; /* Space between items */
+  justify-items: center;
+  margin-top: 20px;
 }
 
 .spotify-playlists .list .item {
-  min-width: 170px;
-  width: 165px;
   padding: 15px;
   background-color: #181818;
   border-radius: 6px;
@@ -33,6 +90,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between; /* Ensures space between content and button */
+  height: 100%; /* Let the container grow with content */
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%; /* Makes each item responsive */
+  overflow: hidden; /* Prevents overflow */
+  position: relative;
 }
 
 .spotify-playlists .list .item:hover {
@@ -41,49 +105,84 @@
 
 .spotify-playlists .list .item img {
   width: 100%;
+  height: 140px; /* Fixed image height */
+  object-fit: cover;
   border-radius: 6px;
   margin-bottom: 10px;
 }
 
-.spotify-playlists .list .item .play {
-  position: relative;
-}
-
-.spotify-playlists .list .item .play .fa {
-  position: absolute;
-  right: 10px;
-  top: -60px;
-  padding: 18px;
-  background-color: #1db954;
-  border-radius: 100%;
-  opacity: 0;
-  transition: all ease 0.4s;
-}
-
-.spotify-playlists .list .item:hover .play .fa {
-  opacity: 1;
-  transform: translateY(-20px);
-}
-
+/* Show the name of the playlist */
 .spotify-playlists .list .item h4 {
   color: #ffffff;
   font-size: 14px;
   margin-bottom: 10px;
   text-align: center;
-  white-space: nowrap;
+  white-space: normal; /* Allow text to wrap */
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Truncates text if it's too long */
+  word-wrap: break-word; /* Allows the name to break into new lines */
+  line-height: 1.4; /* Adjust line spacing */
+  padding-bottom: 30px; /* Give extra space to avoid overlap with button */
 }
 
+/* Hide other content */
 .spotify-playlists .list .item p {
-  color: #989898;
-  font-size: 12px;
-  line-height: 20px;
-  font-weight: 600;
-  text-align: center;
+  display: none; /* Hide description */
 }
 
 .spotify-playlists hr {
   margin: 70px 0px 0px;
   border-color: #636363;
+}
+
+/* Play button - make it circular like Spotify */
+.track-link {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: #1DB954; /* Spotify green */
+  border-radius: 50%; /* Circular shape */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+  position: absolute; /* Positioning the button */
+  bottom: 10px; /* Position it at the bottom */
+  left: 10px; /* Position it at the left */
+}
+
+.track-link:hover {
+  background-color: #1aa34a; /* Darker green on hover */
+}
+
+.track-link .fa-play {
+  color: white;
+  font-size: 24px; /* Icon size */
+}
+
+/* Ensure responsive behavior on smaller screens */
+@media screen and (max-width: 1200px) {
+  .spotify-playlists .list {
+    grid-template-columns: repeat(4, 1fr); /* 4 items per row on medium screens */
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .spotify-playlists .list {
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row on smaller screens */
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .spotify-playlists .list {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row on mobile screens */
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .spotify-playlists .list {
+    grid-template-columns: 1fr; /* 1 item per row on very small screens */
+  }
 }
