@@ -1,296 +1,217 @@
-/* General page styles */
+.main-content {
+    margin-left: -90%;
+}
+.spotify-playlists {
+    padding: 20px 40px;
+    margin-left: -20px;
+}
+.spotify-playlists h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+.spotify-playlists .list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow: hidden;
+    justify-content: center;
+}
+.spotify-playlists .list .item {
+    min-width: 170px;
+    width: 165px;
+    padding: 15px;
+    background-color: #181818;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all ease 0.4s;
+}
+.spotify-playlists .list .item:hover {
+    background-color: #252525;
+}
+.spotify-playlists .list .item img {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.spotify-playlists .list .item .play {
+    position: relative;
+}
+.spotify-playlists .list .item .play .fa {
+    position: absolute;
+    right: 10px;
+    top: -60px;
+    padding: 18px;
+    background-color: #1db954;
+    border-radius: 100%;
+    opacity: 0;
+    transition: all ease 0.4s;
+}
+.spotify-playlists .list .item:hover .play .fa {
+    opacity: 1;
+    transform: translateY(-20px);
+}
+.spotify-playlists .list .item h4 {
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.spotify-playlists .list .item p {
+    color: #989898;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.spotify-playlists hr {
+    margin: 70px 0px 0px;
+    border-color: #636363;
+}
+
+/* Background overlay when popup appears */
+.track-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+
+/* Popup image */
+.track-popup img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Spotify link */
+#popup-spotify-link {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #121212; /* Dark background */
-  color: white;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #3d023d, #444244);
+    color: white;
+    text-align: center;
 }
 
-/* Main content styles */
 .main-text {
-  text-align: center;
-  margin-top: 80px;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.home-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100vh;
+.main-text h1 {
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #1db954, #1ed760);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
 }
 
-.hero-section {
-  background-color: #1a1a1a;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  width: 80%;
-  max-width: 800px;
-}
-
-.hero-section h1 {
-  font-size: 3em;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.hero-section p {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  color: #aaa;
+.main-text p {
+    font-size: 18px;
+    color: #bbb;
+    margin-bottom: 20px;
 }
 
 .search-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
-/* Button Styles */
 .btn-search {
-  display: inline-block;
-  padding: 15px 30px;
-  background-color: #1DB954; /* Spotify green */
-  color: #fff;
-  font-size: 1.2em;
-  text-decoration: none;
-  border-radius: 50px;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  font-weight: 600;
-  text-transform: uppercase;
+    background: #1db954;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .btn-search:hover {
-  background-color: #1aa34a;
-  transform: scale(1.1); /* Button enlargement effect */
+    background: #1ed760;
+    transform: scale(1.05);
 }
 
-/* Hover Effect for Buttons */
-.search-buttons .btn-search {
-  position: relative;
-  overflow: hidden;
-}
-
-.search-buttons .btn-search:before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background-color: rgba(0, 0, 0, 0.2);
-  transform: translate(-50%, -50%) scale(0);
-  transition: all 0.6s ease;
-  border-radius: 50%;
-}
-
-.search-buttons .btn-search:hover:before {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Modal background */
 .track-popup {
-  display: none; /* Initially hidden */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Dark background */
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-/* Pop-up content */
+/* Popup content */
 .track-popup-content {
-  background-color: #fff;
-  padding: 20px;
-  max-width: 600px;
-  width: 90%;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-  animation: slideIn 0.5s ease-in-out;
-}
-
-/* Track image inside the modal */
-.track-popup-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  margin-bottom: 15px;
-}
-
-/* Pop-up title and details */
-#popup-details h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-#popup-details p {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-#popup-spotify-link {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #1DB954; /* Spotify green */
-  color: #fff;
-  text-decoration: none;
-  border-radius: 5px;
-}
-
-#popup-spotify-link:hover {
-  background-color: #1aa34a; /* Darker green on hover */
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 350px;
+    color: #000;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Close button */
 .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 30px;
-  color: #aaa;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
 }
 
-.close-btn:hover {
-  color: #000;
+/* Popup image */
+.track-popup img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
-/* Item styles */
-.spotify-playlists .list {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 items per row */
-  gap: 20px; /* Space between items */
-  justify-items: center;
-  margin-top: 20px;
+/* Spotify link */
+#popup-spotify-link {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
-.spotify-playlists .list .item {
-  padding: 15px;
-  background-color: #181818;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all ease 0.4s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; /* Ensures space between content and button */
-  height: 100%; /* Let the container grow with content */
-  text-align: center;
-  box-sizing: border-box;
-  width: 100%; /* Makes each item responsive */
-  overflow: hidden; /* Prevents overflow */
-  position: relative;
-}
-
-.spotify-playlists .list .item:hover {
-  background-color: #252525;
-}
-
-.spotify-playlists .list .item img {
-  width: 100%;
-  height: 140px; /* Fixed image height */
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-/* Show the name of the playlist */
-.spotify-playlists .list .item h4 {
-  color: #ffffff;
-  font-size: 14px;
-  margin-bottom: 10px;
-  text-align: center;
-  white-space: normal; /* Allow text to wrap */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Truncates text if it's too long */
-  word-wrap: break-word; /* Allows the name to break into new lines */
-  line-height: 1.4; /* Adjust line spacing */
-  padding-bottom: 30px; /* Give extra space to avoid overlap with button */
-}
-
-/* Hide other content */
-.spotify-playlists .list .item p {
-  display: none; /* Hide description */
-}
-
-.spotify-playlists hr {
-  margin: 70px 0px 0px;
-  border-color: #636363;
-}
-
-/* Play button - make it circular like Spotify */
-.track-link {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  background-color: #1DB954; /* Spotify green */
-  border-radius: 50%; /* Circular shape */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  z-index: 1;
-  position: absolute; /* Positioning the button */
-  bottom: 10px; /* Position it at the bottom */
-  left: 10px; /* Position it at the left */
-}
-
-.track-link:hover {
-  background-color: #1aa34a; /* Darker green on hover */
-}
-
-.track-link .fa-play {
-  color: white;
-  font-size: 24px; /* Icon size */
-}
-
-/* Ensure responsive behavior on smaller screens */
-@media screen and (max-width: 1200px) {
-  .spotify-playlists .list {
-    grid-template-columns: repeat(4, 1fr); /* 4 items per row on medium screens */
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .spotify-playlists .list {
-    grid-template-columns: repeat(3, 1fr); /* 3 items per row on smaller screens */
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .spotify-playlists .list {
-    grid-template-columns: repeat(2, 1fr); /* 2 items per row on mobile screens */
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .spotify-playlists .list {
-    grid-template-columns: 1fr; /* 1 item per row on very small screens */
-  }
-}
-
-/* Keyframe animation for pop-up sliding in */
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+#popup-spotify-link:hover {
+    background: #1ed760;
+    transform: scale(1.1);
 }

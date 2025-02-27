@@ -1,9 +1,9 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-SPOTIFY_CLIENT_ID = "4a2cbb97c5504b7dbe7a2efc0c840bf2"
-SPOTIFY_CLIENT_SECRET = "0fb3aa1797704da5925b662d34732f95"
-SPOTIFY_REDIRECT_URI = "https://fuzzy-potato-5ggq6qx6gw57f7jjv-5000.app.github.dev/callback" 
+SPOTIFY_CLIENT_ID = "8ef11c0c17b949c2b918993d3333d6b6"
+SPOTIFY_CLIENT_SECRET = "754519f617294427bbc65f7a5e078e5f"
+SPOTIFY_REDIRECT_URI = "https://upgraded-garbanzo-5ggq6qx6vq64cprv4-5000.app.github.dev/callback" 
 
 sp_oauth = SpotifyOAuth(
 client_id=SPOTIFY_CLIENT_ID,

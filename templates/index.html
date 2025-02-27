@@ -3,9 +3,9 @@
 {% block content %}
 <link href="../static/css/index.css" rel="stylesheet">
 
-<body>
+<body style="margin-top: 100px;">
   {% if query %}
-  <!-- Search Results -->
+  <!-- Search Results Section -->
   <div class="main-text">
     <h1>Search Results</h1>
     <h4>You searched for "{{ query }}"</h4>
@@ -55,7 +55,7 @@
         <div class="search-buttons">
           <a href="{{ url_for('home.search', q='top hits') }}" class="btn-search">Top Hits</a>
           <a href="{{ url_for('home.search', q='new releases') }}" class="btn-search">New Releases</a>
-          <a href="{{ url_for('home.search', q='Rock') }}" class="btn-search">R</a>
+          <a href="{{ url_for('home.search', q='Rock') }}" class="btn-search">Rock</a>
         </div>
       </div>
     </div>
