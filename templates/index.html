@@ -4,24 +4,26 @@
 <link href="../static/css/index.css" rel="stylesheet">
 
 <body>
-  <div class="main-content">
+  {% if query %}
+  <!-- Search Results -->
+  <div class="main-text">
     <h1>Search Results</h1>
-    
+    <h4>You searched for "{{ query }}"</h4>
     <div class="spotify-playlists">
       <div class="list">
-          {% for track in tracks %}
-          <div class="item">
-              <img src="{{ track['album']['images'][0]['url'] }}" alt="{{ track['name'] }}">
-              <div class="play">
-                  <a href="#" class="track-link" data-track-name="{{ track['name'] }}" data-artist-name="{{ track['artists'][0]['name'] }}" data-album-name="{{ track['album']['name'] }}" data-image="{{ track['album']['images'][0]['url'] }}" data-spotify-url="{{ track['external_urls']['spotify'] }}">
-                      <span class="fa fa-play"></span>
-                  </a>
-              </div>
-              <h4>{{ track['name'] }}</h4>
-              <p>{{ track['artists'][0]['name'] }}</p>
-              <p>Album: {{ track['album']['name'] }}</p>
+        {% for track in tracks %}
+        <div class="item">
+          <img src="{{ track['album']['images'][0]['url'] }}" alt="{{ track['name'] }}">
+          <div class="play">
+            <a href="#" class="track-link" data-track-name="{{ track['name'] }}" data-artist-name="{{ track['artists'][0]['name'] }}" data-album-name="{{ track['album']['name'] }}" data-image="{{ track['album']['images'][0]['url'] }}" data-spotify-url="{{ track['external_urls']['spotify'] }}">
+              <span class="fa fa-play"></span>
+            </a>
           </div>
-          {% endfor %}
+          <h4>{{ track['name'] }}</h4>
+          <p>{{ track['artists'][0]['name'] }}</p>
+          <p>Album: {{ track['album']['name'] }}</p>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -39,6 +41,26 @@
       </div>
     </div>
   </div>
+
+  {% else %}
+  <!-- Homepage when no search query is present -->
+  <div class="main-text">
+    <div class="home-section">
+      <div class="hero-section">
+        <h1>Welcome to Music Haven</h1>
+        <p>Your go-to place to discover new music, playlists, and artists. Explore endless tracks on Spotify.</p>
+        <p>Choose a category below to get started with a music search:</p>
+        
+        <!-- Buttons to trigger different search queries -->
+        <div class="search-buttons">
+          <a href="{{ url_for('home.search', q='top hits') }}" class="btn-search">Top Hits</a>
+          <a href="{{ url_for('home.search', q='new releases') }}" class="btn-search">New Releases</a>
+          <a href="{{ url_for('home.search', q='Rock') }}" class="btn-search">R</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
   <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
   <script>
@@ -79,4 +101,5 @@
     });
   </script>
 </body>
+
 {% endblock %}

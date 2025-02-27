@@ -1,3 +1,98 @@
+/* General page styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #121212; /* Dark background */
+  color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main content styles */
+.main-text {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.home-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.hero-section {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  width: 80%;
+  max-width: 800px;
+}
+
+.hero-section h1 {
+  font-size: 3em;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero-section p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #aaa;
+}
+
+.search-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* Button Styles */
+.btn-search {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #1DB954; /* Spotify green */
+  color: #fff;
+  font-size: 1.2em;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.btn-search:hover {
+  background-color: #1aa34a;
+  transform: scale(1.1); /* Button enlargement effect */
+}
+
+/* Hover Effect for Buttons */
+.search-buttons .btn-search {
+  position: relative;
+  overflow: hidden;
+}
+
+.search-buttons .btn-search:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.6s ease;
+  border-radius: 50%;
+}
+
+.search-buttons .btn-search:hover:before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
 /* Modal background */
 .track-popup {
   display: none; /* Initially hidden */
@@ -22,6 +117,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 /* Track image inside the modal */
@@ -184,5 +280,17 @@
 @media screen and (max-width: 400px) {
   .spotify-playlists .list {
     grid-template-columns: 1fr; /* 1 item per row on very small screens */
+  }
+}
+
+/* Keyframe animation for pop-up sliding in */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

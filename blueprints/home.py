@@ -40,9 +40,21 @@ def search():
     query = request.args.get('q')  
     
     if query:
-         results = senza_login.search(q=query, type='track', limit=10)
-         tracks = results['tracks']['items']
+        results = senza_login.search(q=query, type='track', limit=10)
+        tracks = results['tracks']['items']
+        
+        # Assuming 'tracks' is a list of track data you fetched from Spotify or another source
+        for track in tracks:
+            # Check if 'album' and 'images' exist; if not, set a default image
+            if not track['album']['images']:
+                track['album']['images'] = [{'url': '/static/default-image.jpg'}]  # Set a default image
+            if not track['artists']:
+                track['artists'] = [{'name': 'Unknown Artist'}]  # Set a default artist if none exists
+            if not track['album']['name']:
+                track['album']['name'] = 'Unknown Album'  # Set a default album name if missing
+            if not track['name']:
+                track['name'] = 'Unknown Track'  # Set a default track name if missing
     else:
-        tracks = []  
+        tracks = []  # In case no query is provided, we return an empty list of tracks
 
     return render_template('index.html', tracks=tracks, query=query)
