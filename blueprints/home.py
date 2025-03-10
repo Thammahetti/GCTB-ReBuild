@@ -5,12 +5,9 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 home_bp = Blueprint('home', __name__) 
 
-credenziali = SpotifyClientCredentials(
-    client_id="4a2cbb97c5504b7dbe7a2efc0c840bf2", 
-    client_secret="0fb3aa1797704da5925b662d34732f95"
-)
 
-senza_login = spotipy.Spotify(client_credentials_manager=credenziali)
+
+senza_login = spotipy.Spotify(client_credentials_manager=sp_oauth)
 @home_bp.route('/home')
 def home():
     token_info = session.get('token_info', None)
@@ -42,19 +39,18 @@ def search():
     if query:
         results = senza_login.search(q=query, type='track', limit=10)
         tracks = results['tracks']['items']
-        
-        # Assuming 'tracks' is a list of track data you fetched from Spotify or another source
+    
         for track in tracks:
-            # Check if 'album' and 'images' exist; if not, set a default image
+           
             if not track['album']['images']:
-                track['album']['images'] = [{'url': '/static/default-image.jpg'}]  # Set a default image
+                track['album']['images'] = [{'url': '/static/default-image.jpg'}] 
             if not track['artists']:
-                track['artists'] = [{'name': 'Unknown Artist'}]  # Set a default artist if none exists
+                track['artists'] = [{'name': 'Unknown Artist'}] 
             if not track['album']['name']:
-                track['album']['name'] = 'Unknown Album'  # Set a default album name if missing
+                track['album']['name'] = 'Unknown Album'  
             if not track['name']:
-                track['name'] = 'Unknown Track'  # Set a default track name if missing
+                track['name'] = 'Unknown Track' 
     else:
-        tracks = []  # In case no query is provided, we return an empty list of tracks
+        tracks = [] 
 
     return render_template('index.html', tracks=tracks, query=query)
