@@ -11,19 +11,19 @@
     <h4>You searched for "{{ query }}"</h4>
     <div class="spotify-playlists">
       <div class="list">
-        {% for track in tracks %}
-        <div class="item">
-          <img src="{{ track['album']['images'][0]['url'] }}" alt="{{ track['name'] }}">
-          <div class="play">
-            <a href="#" class="track-link" data-track-name="{{ track['name'] }}" data-artist-name="{{ track['artists'][0]['name'] }}" data-album-name="{{ track['album']['name'] }}" data-image="{{ track['album']['images'][0]['url'] }}" data-spotify-url="{{ track['external_urls']['spotify'] }}">
-              <span class="fa fa-play"></span>
-            </a>
+        {% for playlist in playlists %}
+          <div class="item">
+            <img src="{{ playlist['images'][0]['url'] }}" alt="{{ playlist['name'] }}">
+            <div class="play">
+              <a href="#" class="track-link" data-track-name="{{ playlist['name'] }}" data-artist-name="{{ playlist['owner']['display_name'] }}" data-album-name="{{ playlist['name'] }}" data-image="{{ playlist['images'][0]['url'] }}" data-spotify-url="{{ playlist['external_urls']['spotify'] }}">
+                <span class="fa fa-play"></span>
+              </a>
+            </div>
+            <h4>{{ playlist['name'] }}</h4>
+            <p>By: {{ playlist['owner']['display_name'] }}</p>
           </div>
-          <h4>{{ track['name'] }}</h4>
-          <p>{{ track['artists'][0]['name'] }}</p>
-          <p>Album: {{ track['album']['name'] }}</p>
-        </div>
         {% endfor %}
+
       </div>
     </div>
   </div>

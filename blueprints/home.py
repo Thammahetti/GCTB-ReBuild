@@ -34,23 +34,29 @@ def playlist_details(playlist_id):
 
 @home_bp.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('q')  
-    
-    if query:
-        results = senza_login.search(q=query, type='track', limit=10)
-        tracks = results['tracks']['items']
-    
-        for track in tracks:
-           
-            if not track['album']['images']:
-                track['album']['images'] = [{'url': '/static/default-image.jpg'}] 
-            if not track['artists']:
-                track['artists'] = [{'name': 'Unknown Artist'}] 
-            if not track['album']['name']:
-                track['album']['name'] = 'Unknown Album'  
-            if not track['name']:
-                track['name'] = 'Unknown Track' 
-    else:
-        tracks = [] 
+    query = request.args.get('q')
 
-    return render_template('index.html', tracks=tracks, query=query)
+    if query:
+        results = senza_login.search(q=query, type='playlist', limit=10)
+        
+        # Controllo che results non sia None e che contenga playlist
+        playlists = results.get('playlists', {}).get('items', [])
+
+        cleaned_playlists = []  # Lista per memorizzare solo le playlist valide
+
+        for playlist in playlists:
+            if playlist is None:  # Controllo che la playlist non sia None
+                continue
+
+            # Assicura che 'images', 'name' e 'owner' siano presenti
+            playlist['images'] = playlist.get('images', [{'url': '/static/default-image.jpg'}])
+            playlist['name'] = playlist.get('name', 'Unknown Playlist')
+            playlist['owner'] = playlist.get('owner', {'display_name': 'Unknown'})
+
+            cleaned_playlists.append(playlist)  # Aggiunge solo playlist valide
+        
+    else:
+        cleaned_playlists = []
+
+    return render_template('index.html', playlists=cleaned_playlists, query=query)
+
