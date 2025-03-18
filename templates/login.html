@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="../static/css/login.css" rel="stylesheet">
+        <title>Login</title>     
+        <h2 class="title">Login</h2>
+    </head>
+    <body>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+        <div class="container">
+            <form method="POST">
+                <input type="text" name="username" placeholder="Inserire username" required class="placeholder"><br><br>
+                <input type="password" name="password" placeholder="Inserire password" required class="placeholder"><br><br>
+                <button type="submit" class="accedi">Accedi</button>
+            </form>
+            <p style="font-size: large;">Non hai un'account? <a href="{{ url_for('register') }}">Clicca qui</a></p>
+        </div>
+    </body>
+</html>
