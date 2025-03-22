@@ -3,14 +3,11 @@ from services.spotify_oauth import sp_oauth, get_spotify_object
 from blueprints.main_page import main_bp
 auth_bp = Blueprint('auth', __name__) 
 
-@auth_bp.route('/login')
+@auth_bp.route('/')
 def login():
     auth_url = sp_oauth.get_authorize_url()
     
     return redirect(auth_url)
-
-
-
 
 @auth_bp.route('/callback')
 def callback():
