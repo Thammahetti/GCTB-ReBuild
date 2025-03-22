@@ -15,7 +15,7 @@
           <div class="item">
             <img src="{{ playlist['images'][0]['url'] }}" alt="{{ playlist['name'] }}">
             <div class="play">
-              <a href="#" class="track-link" data-track-name="{{ playlist['name'] }}" data-artist-name="{{ playlist['owner']['display_name'] }}" data-album-name="{{ playlist['name'] }}" data-image="{{ playlist['images'][0]['url'] }}" data-spotify-url="{{ playlist['external_urls']['spotify'] }}">
+              <a href="#" class="track-link" data-track-name="{{ playlist['name'] }}" data-artist-name="{{ playlist['owner']['display_name'] }}" data-album-name="{{ playlist['name'] }}" data-image="{{ playlist['images'][0]['url'] }}" data-spotify-url="{{ playlist['external_urls']['spotify'] }}" data-playlist-id="{{ playlist['id'] }}">
                 <span class="fa fa-play"></span>
               </a>
             </div>
@@ -23,7 +23,6 @@
             <p>By: {{ playlist['owner']['display_name'] }}</p>
           </div>
         {% endfor %}
-
       </div>
     </div>
   </div>
@@ -38,9 +37,61 @@
         <p id="popup-artist"></p>
         <p id="popup-album"></p>
         <a id="popup-spotify-link" href="" target="_blank">Listen on Spotify</a>
+        
+        <!-- Add Playlist Button -->
+        <button id="add-playlist-btn" class="btn-add-playlist">Add Playlist</button>
       </div>
     </div>
   </div>
+
+  <!-- Graph Section -->
+  <div class="main-text mt-5">
+    <h3>Top 5 Artists</h3>
+    <div id="artist-graph"></div>
+  </div>
+
+  <div class="main-text mt-5">
+    <h3>Top 5 Albums</h3>
+    <div id="album-graph"></div>
+  </div>
+
+  <div class="main-text mt-5">
+    <h3>Music Genre Distribution</h3>
+    <div id="genre-graph"></div>
+  </div>
+
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    // Debugging the Graph Data
+    console.log("Artist Graph Data:", {{ artist_graph | tojson }});
+    console.log("Album Graph Data:", {{ album_graph | tojson }});
+    console.log("Genre Graph Data:", {{ genre_graph | tojson }});
+
+    // Rendering Graphs only if data is valid
+    var artistGraphData = {{ artist_graph | safe }};
+    if (artistGraphData && artistGraphData.data) {
+        Plotly.newPlot('artist-graph', artistGraphData.data, artistGraphData.layout);
+    } else {
+        console.error("Invalid or missing data for artist graph");
+        document.getElementById('artist-graph').innerHTML = '<p>Graph data is missing or could not be loaded.</p>';
+    }
+
+    var albumGraphData = {{ album_graph | safe }};
+    if (albumGraphData && albumGraphData.data) {
+        Plotly.newPlot('album-graph', albumGraphData.data, albumGraphData.layout);
+    } else {
+        console.error("Invalid or missing data for album graph");
+        document.getElementById('album-graph').innerHTML = '<p>Graph data is missing or could not be loaded.</p>';
+    }
+
+    var genreGraphData = {{ genre_graph | safe }};
+    if (genreGraphData && genreGraphData.data) {
+        Plotly.newPlot('genre-graph', genreGraphData.data, genreGraphData.layout);
+    } else {
+        console.error("Invalid or missing data for genre graph");
+        document.getElementById('genre-graph').innerHTML = '<p>Graph data is missing or could not be loaded.</p>';
+    }
+  </script>
 
   {% else %}
   <!-- Homepage when no search query is present -->
@@ -70,31 +121,59 @@
     document.querySelectorAll('.track-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault(); // Prevent the default action (open Spotify link)
-
+  
         // Get data from the clicked link
         const trackName = this.getAttribute('data-track-name');
         const artistName = this.getAttribute('data-artist-name');
         const albumName = this.getAttribute('data-album-name');
         const imageUrl = this.getAttribute('data-image');
         const spotifyUrl = this.getAttribute('data-spotify-url');
-
+        const playlistId = this.getAttribute('data-playlist-id'); // Get the playlist ID
+  
         // Update the pop-up content with the track details
         document.getElementById('popup-title').innerText = trackName;
         document.getElementById('popup-artist').innerText = "Artist: " + artistName;
         document.getElementById('popup-album').innerText = "Album: " + albumName;
         document.getElementById('popup-image').src = imageUrl;
         document.getElementById('popup-spotify-link').href = spotifyUrl;
-
+  
         // Show the pop-up
         document.getElementById('track-popup').style.display = 'flex';
+  
+        // Store the playlist ID in the button for later use
+        const addButton = document.getElementById('add-playlist-btn');
+        addButton.setAttribute('data-playlist-id', playlistId);
       });
     });
-
+  
+    // Handle "Add Playlist" button click
+    document.getElementById('add-playlist-btn').addEventListener('click', function() {
+      const playlistId = this.getAttribute('data-playlist-id'); // Get the playlist ID
+  
+      // Send the playlist ID to the server via AJAX
+      fetch(`/add_playlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playlist_id: playlistId })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Playlist added successfully!');
+        } else {
+          alert('Error adding playlist: ' + data.message);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  
     // Close the pop-up when clicking the close button
     document.getElementById('close-popup').addEventListener('click', function() {
       document.getElementById('track-popup').style.display = 'none';
     });
-
+  
     // Close the pop-up when clicking outside the pop-up content
     window.addEventListener('click', function(e) {
       if (e.target === document.getElementById('track-popup')) {
