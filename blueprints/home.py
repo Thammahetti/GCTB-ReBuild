@@ -7,11 +7,11 @@ home_bp = Blueprint('home', __name__)
 
 senza_login = spotipy.Spotify(client_credentials_manager=sp_oauth)
 
-@home_bp.route('/home')
-def home():
-    token_info = session.get('token_info', None)
+@home_bp.route('/home1')
+def home1():
+    token_info = session.get('spotify_token', None)
     if not token_info:
-        return redirect(url_for('auth.login')) 
+        return redirect(url_for('auth.logout_spotify')) 
 
     sp = get_spotify_object(token_info)
     user_info = sp.current_user()
@@ -20,11 +20,12 @@ def home():
 
     return render_template('home.html', user_info=user_info, playlists=playlists_info)
 
+
 @home_bp.route('/playlist/<playlist_id>')
 def playlist_details(playlist_id):
     token_info = session.get('token_info', None)
     if not token_info:
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('auth.logout_spotify'))
 
     sp = spotipy.Spotify(auth=token_info['access_token'])
     brani = sp.playlist_items(playlist_id)
