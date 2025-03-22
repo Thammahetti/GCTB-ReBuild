@@ -1,9 +1,10 @@
 from flask import Blueprint, redirect, request, url_for, session, render_template
 from services.spotify_oauth import sp_oauth, get_spotify_object
 from flask_login import LoginManager, login_user, logout_user, login_required,current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import db, User
 
 main_bp = Blueprint('main_page', __name__) 
-
 
 @main_bp.route('/', methods=['GET', 'POST'])
 def register():
@@ -19,7 +20,7 @@ def register():
         #Controllo per vedere se esiste già
         if User.query.filter_by(username=username).first():
             return render_template('register.html', error="Questo username è già in uso.")
-        #Invio dati al metodo calcola_cf
+
         new_user = User( nome=nome ,cognome=cognome, email= email, username=username, password=password_hash )
         db.session.add(new_user)
         db.session.commit()
@@ -37,6 +38,11 @@ def login1():
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('home.home'))
         return render_template('login.html', error="Credenziali non valide.") 
     return render_template('login.html', error=None)
+
+@main_bp.route('/home', endpoint='main_home')
+@login_required
+def home():
+    return render_template('index.html', error=None)

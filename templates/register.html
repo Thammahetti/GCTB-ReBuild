@@ -2,7 +2,6 @@
 <html>
     <head>
         <link href="../static/css/register.css" rel="stylesheet">
-        <h2 class="title">Registrazione</h2>
     </head>
     <body> 
         {% if error %}
@@ -10,16 +9,12 @@
         {% endif %}
         <div class="container">
             <form method="POST">
-                <label class="label">Nome:</label>
-                <input type="text" name="nome" required class="input"><br>
-                <label class="label">Cognome:</label><br>
-                <input type="text" name="cognome" required class="input"><br>
-                <label class="label">Email:</label><br>
-                <input type="text" name="email" required class="input"><br>
-                <label class="label">Username:</label><br>
-                <input type="text" name="username" required class="input"><br>
-                <label class="label">Password:</label><br>
-                <input type="password" name="password" required class="input"><br>
+                <h2 class="title">Registrazione</h2>
+                <input type="text" name="nome" required class="input" placeholder="Inserire nome"><br>
+                <input type="text" name="cognome" required class="input" placeholder="Inserire cognome"><br>
+                <input type="text" name="email" required class="input" placeholder="Inserire email"><br>
+                <input type="text" name="username" required class="input" placeholder="Inserire username"><br>
+                <input type="password" name="password" required class="input" placeholder="Inserire password"><br>
                 <button type="submit" class="registrati">Registrati</button>
             </form>
             <p style="font-size: large;">Hai già account? <a href="{{ url_for('main_page.login1') }}">Clicca qui</a></p>
