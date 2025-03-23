@@ -13,7 +13,20 @@
 
 <body>
     <div class="container mt-6 spotify-playlists">
-       
+        <h2>Your Playlists</h2>
+        
+        {% if playlists %}
+            <div class="list">
+                {% for playlist in playlists %}
+                    <div class="item">
+                        <img src="{{ playlist.image_url }}" alt="{{ playlist.name }}">
+                        <h4>{{ playlist.name }}</h4>
+                        <a href="{{ playlist.url }}" class="btn btn-primary" target="_blank">Open Playlist</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>{{ message }}</p>
         {% endif %}
     </div>
 
