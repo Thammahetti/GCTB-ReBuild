@@ -97,7 +97,6 @@ body {
     text-align: center;
     font-weight: bold;
     padding: 14px;
-    width: 100px;
     border: 0px;
     border-radius: 40px;
     cursor: pointer;
@@ -116,10 +115,6 @@ body {
     transform: scale(1.1);
 }
 
-/* Navbar mobile */
-.navbar-toggler-icon {
-    background-color: white;
-}
 
 /* Navbar Dropdown */
 .navbar-nav .nav-item .dropdown-menu {
