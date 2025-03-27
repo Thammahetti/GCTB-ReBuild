@@ -105,7 +105,9 @@
 }
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #3d023d, #444244);
+    background: rgb(7,83,0);
+    background: linear-gradient(0deg, rgba(7,83,0,1) 0%, rgba(0,0,0,1) 100%);
+    padding-bottom: 24%;
     text-align: center;
 }
 
@@ -118,9 +120,7 @@ body {
 .main-text h1 {
     font-size: 48px;
     font-weight: bold;
-    background: linear-gradient(90deg, #1db954, #1ed760);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(39, 136, 0);
     margin-bottom: 20px;
 }
 
@@ -138,8 +138,8 @@ body {
 }
 
 .btn-search {
-    background: #1db954;
-    color: white;
+    background: rgb(17,88,0);
+    background: linear-gradient(90deg, rgba(17,88,0,1) 0%, rgba(32,116,0,1) 100%);    color: white;
     padding: 12px 20px;
     border-radius: 30px;
     text-decoration: none;
@@ -148,7 +148,7 @@ body {
 }
 
 .btn-search:hover {
-    background: #1ed760;
+    background: rgb(39, 136, 0);
     transform: scale(1.05);
 }
 
