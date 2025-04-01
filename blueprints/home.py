@@ -36,88 +36,35 @@ def playlist_details(playlist_id):
 
     return render_template('brani.html', brani=brani_specifici)
 
-def get_top_artists(query):
-    # Search for top artists based on the query
-    results = senza_login.search(q=query, type='artist', limit=10)
-    artists = results.get('artists', {}).get('items', [])
 
-    artist_names = [artist['name'] for artist in artists]
-    artist_popularity = [artist['popularity'] for artist in artists]
 
-    return {
-        'data': [{
-            'type': 'bar',
-            'x': artist_names,
-            'y': artist_popularity,
-            'name': 'Top Artists',
-            'marker': {'color': 'rgb(100, 100, 255)'}
-        }],
-        'layout': {
-            'title': 'Top Artists',
-            'xaxis': {'title': 'Artists'},
-            'yaxis': {'title': 'Popularity'}
-        }
-    }
 
-def get_top_albums(query):
-    # Search for top albums based on the query
-    results = senza_login.search(q=query, type='album', limit=10)
-    albums = results.get('albums', {}).get('items', [])
+@home_bp.route('/brani_playlist')
+def brani_playlist():
+    # Ottieni l'ID della playlist dalla query string
+    playlist_id = request.args.get('playlist_id')
 
-    album_names = [album['name'] for album in albums]
+    if playlist_id:
+        # Recupera i dettagli della playlist usando l'ID
+        playlist = senza_login.playlist_tracks(playlist_id)
+
+        # Estrai i brani dalla risposta
+        tracks = playlist['items']
+        
+        # Pulizia dei dati per evitare errori se i dati non sono completi
+        cleaned_tracks = []
+        for track in tracks:
+            track_info = track['track']
+            track_info['name'] = track_info.get('name', 'Unknown Track')
+            track_info['artists'] = ', '.join([artist['name'] for artist in track_info.get('artists', [])])
+            track_info['album'] = track_info.get('album', {}).get('name', 'Unknown Album')
+            track_info['image_url'] = track_info.get('album', {}).get('images', [{'url': '/static/default-image.jpg'}])[0]['url']
+            cleaned_tracks.append(track_info)
+
+        # Passa i brani alla template
+        return render_template('brani_playlist.html', tracks=cleaned_tracks, playlist_id=playlist_id)
     
-    # Ensure that 'popularity' exists in the album object
-    album_popularity = [album.get('popularity', 0) for album in albums]  # Default to 0 if no popularity data
-
-    return {
-        'data': [{
-            'type': 'bar',
-            'x': album_names,
-            'y': album_popularity,
-            'name': 'Top Albums',
-            'marker': {'color': 'rgb(255, 100, 100)'}
-        }],
-        'layout': {
-            'title': 'Top Albums',
-            'xaxis': {'title': 'Albums'},
-            'yaxis': {'title': 'Popularity'}
-        }
-    }
-
-
-def get_genre_distribution(query):
-    # Search for top artists based on the query
-    results = senza_login.search(q=query, type='artist', limit=10)
-    artists = results.get('artists', {}).get('items', [])
-
-    genres = []
-    for artist in artists:
-        genres.extend(artist.get('genres', []))  # Collect genres of each artist
-
-    # Count the frequency of each genre
-    genre_count = {genre: genres.count(genre) for genre in set(genres)}
-
-    # Prepare the genre data for graphing
-    genre_names = list(genre_count.keys())
-    genre_frequencies = list(genre_count.values())
-
-    return {
-        'data': [{
-            'type': 'bar',
-            'x': genre_names,
-            'y': genre_frequencies,
-            'name': 'Genre Distribution',
-            'marker': {'color': 'rgb(50, 150, 50)'}
-        }],
-        'layout': {
-            'title': 'Genre Distribution',
-            'xaxis': {'title': 'Genres'},
-            'yaxis': {'title': 'Frequency'}
-        }
-    }
-
-
-
+    return "Playlist ID not found", 404
 
 @home_bp.route('/search', methods=['GET'])
 def search():
@@ -140,13 +87,9 @@ def search():
 
             cleaned_playlists.append(playlist)
 
-        # Get graph data for artists, albums, and genres without needing login
-        top_artists_data = get_top_artists(query)  # You can call this directly using `senza_login`
-        top_albums_data = get_top_albums(query)
-        genre_data = get_genre_distribution(query)
 
-        return render_template('index.html', playlists=cleaned_playlists, query=query,
-                               artist_graph=top_artists_data, album_graph=top_albums_data, genre_graph=genre_data)
+
+        return render_template('index.html', playlists=cleaned_playlists, query=query)
 
     else:
         cleaned_playlists = []
