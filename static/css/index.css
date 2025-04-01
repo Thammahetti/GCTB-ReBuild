@@ -211,3 +211,19 @@ body {
     background: #1ed760;
     transform: scale(1.1);
 }
+
+.btn-add-playlist {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 12px 17px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-add-playlist:hover {
+    background: #1ed760;
+    transform: scale(1.1);
+}
