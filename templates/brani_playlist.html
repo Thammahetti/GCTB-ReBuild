@@ -1,13 +1,14 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 {% extends "nav.html" %}
-{% block content %}
 
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../static/css/index.css" rel="stylesheet">
     <title>GCTB - Brani della Playlist</title>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
 </head>
 
 <body>
@@ -40,7 +41,34 @@
         {% else %}
             <p>Nessun brano trovato in questa playlist.</p>
         {% endif %}
+
+        <div class="charts-container">
+            <h2>Analisi della Playlist</h2>
+            
+            <div id="grafico-artisti"></div>
+            <div id="grafico-album"></div>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const playlistId = "{{ playlist_id }}";  // Assicurati che venga passato l'ID playlist dal backend
+            
+            // Richiesta per ottenere i grafici dalla playlist
+            fetch(`/grafici_playlist?playlist_id=${playlistId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Carica i grafici nella pagina se esistono
+                    if (data.grafico_artisti && data.grafico_album) {
+                        document.getElementById("grafico-artisti").innerHTML = data.grafico_artisti;
+                        document.getElementById("grafico-album").innerHTML = data.grafico_album;
+                    } else {
+                        console.error("Errore nel caricamento dei grafici.");
+                    }
+                })
+                .catch(error => console.error("Errore nella richiesta:", error));
+        });
+    </script>
 </body>
 
 {% endblock %}
