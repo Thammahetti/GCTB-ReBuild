@@ -41,30 +41,45 @@ def playlist_details(playlist_id):
 
 @home_bp.route('/brani_playlist')
 def brani_playlist():
-    # Ottieni l'ID della playlist dalla query string
     playlist_id = request.args.get('playlist_id')
 
     if playlist_id:
-        # Recupera i dettagli della playlist usando l'ID
-        playlist = senza_login.playlist_tracks(playlist_id)
+        try:
+            # Recupera i brani della playlist
+            playlist = senza_login.playlist_tracks(playlist_id)
 
-        # Estrai i brani dalla risposta
-        tracks = playlist['items']
-        
-        # Pulizia dei dati per evitare errori se i dati non sono completi
-        cleaned_tracks = []
-        for track in tracks:
-            track_info = track['track']
-            track_info['name'] = track_info.get('name', 'Unknown Track')
-            track_info['artists'] = ', '.join([artist['name'] for artist in track_info.get('artists', [])])
-            track_info['album'] = track_info.get('album', {}).get('name', 'Unknown Album')
-            track_info['image_url'] = track_info.get('album', {}).get('images', [{'url': '/static/default-image.jpg'}])[0]['url']
-            cleaned_tracks.append(track_info)
+            tracks = playlist.get('items', [])  # Prende la lista dei brani
+            
+            cleaned_tracks = []
+            for track in tracks:
+                track_info = track.get('track', {})  # Prendi il dizionario 'track'
 
-        # Passa i brani alla template
-        return render_template('brani_playlist.html', tracks=cleaned_tracks, playlist_id=playlist_id)
-    
+                if not isinstance(track_info, dict):  # Controllo se è effettivamente un dizionario
+                    continue
+                
+                track_name = track_info.get('name', 'Unknown Track')
+                artist_names = ', '.join([artist.get('name', 'Unknown') for artist in track_info.get('artists', [])])
+                album_name = track_info.get('album', {}).get('name', 'Unknown Album')
+
+                # Controllo immagini album
+                album_images = track_info.get('album', {}).get('images', [{'url': '/static/default-image.jpg'}])
+                image_url = album_images[0]['url'] if album_images else '/static/default-image.jpg'
+
+                cleaned_tracks.append({
+                    'name': track_name,
+                    'artists': artist_names,
+                    'album': album_name,
+                    'image_url': image_url,
+                    'id': track_info.get('id', '')
+                })
+
+            return render_template('brani_playlist.html', tracks=cleaned_tracks, playlist_id=playlist_id)
+
+        except Exception as e:
+            return f"Errore durante il recupero dei brani: {str(e)}", 500
+
     return "Playlist ID not found", 404
+
 
 @home_bp.route('/search', methods=['GET'])
 def search():

@@ -2,26 +2,46 @@
 <html lang="en">
 {% extends "nav.html" %}
 {% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../static/css/home.css" rel="stylesheet">
-    <title>GCTB - Profilo Utente</title>
-    <style>
-    
-    </style>
+    <link href="../static/css/index.css" rel="stylesheet">
+    <title>GCTB - Brani della Playlist</title>
 </head>
+
 <body>
     <div class="container">
-   
-        <h1>Benvenuto su <span>GCTB</span>!</h1>
-        
-  
-        
-     
-        <h2>Le tue Playlist:</h2>
-    </div>  
+        <h1>Brani della Playlist</h1>
+
+        {% if tracks %}
+            <table class="playlist-table">
+                <thead>
+                    <tr>
+                        <th>Copertina</th>
+                        <th>Nome Brano</th>
+                        <th>Artisti</th>
+                        <th>Album</th>
+                        <th>Ascolta su Spotify</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for track in tracks %}
+                        <tr>
+                            <td><img src="{{ track.image_url }}" alt="Album Cover" width="80"></td>
+                            <td>{{ track.name }}</td>
+                            <td>{{ track.artists }}</td>
+                            <td>{{ track.album }}</td>
+                            <td><a href="{{ track.spotify_url }}" class="btn btn-primary" target="_blank">🎵 Ascolta</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nessun brano trovato in questa playlist.</p>
+        {% endif %}
     </div>
 </body>
+
 {% endblock %}
 </html>
