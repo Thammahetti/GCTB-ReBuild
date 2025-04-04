@@ -1,0 +1,32 @@
+{% extends "nav.html" %}
+
+{% block content %}
+<link href="../static/css/index.css" rel="stylesheet">
+
+<body style="margin-top: 100px;">
+  <div class="comparison-section">
+    <h1>Playlist Comparison</h1>
+
+    <div class="playlist-info">
+      <div class="playlist">
+        <h2>{{ playlists[0]['name'] }}</h2>
+        <p>Total Tracks: {{ playlist_data['playlist_1']['total_tracks'] }}</p>
+        <p>Common Tracks: {{ playlist_data['playlist_1']['common_tracks'] }}</p>
+        <p>Similarity Percentage: {{ playlist_data['playlist_1']['similarity_percentage']|round(2) }}%</p>
+      </div>
+      <div class="playlist">
+        <h2>{{ playlists[1]['name'] }}</h2>
+        <p>Total Tracks: {{ playlist_data['playlist_2']['total_tracks'] }}</p>
+        <p>Common Tracks: {{ playlist_data['playlist_2']['common_tracks'] }}</p>
+        <p>Similarity Percentage: {{ playlist_data['playlist_2']['similarity_percentage']|round(2) }}%</p>
+      </div>
+    </div>
+
+    <div id="playlist-comparison-graph">
+      <!-- Display Plotly graph -->
+      {{ graph | safe }}
+    </div>
+  </div>
+</body>
+
+{% endblock %}

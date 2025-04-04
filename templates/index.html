@@ -9,6 +9,7 @@
   <div class="main-text">
     <h1>Search Results</h1>
     <h4>You searched for "{{ query }}"</h4>
+    <button id="compare-playlists-btn">Compare Playlists</button>
     <div class="spotify-playlists">
       <div class="list">
         {% for playlist in playlists %}
@@ -21,8 +22,12 @@
             </div>
             <h4>{{ playlist['name'] }}</h4>
             <p>By: {{ playlist['owner']['display_name'] }}</p>
+
+            <!-- Add select button for comparison -->
+            <button class="btn-select-playlist" data-playlist-id="{{ playlist['id'] }}">Select for Comparison</button>
           </div>
         {% endfor %}
+
       </div>
     </div>
   </div>
@@ -127,6 +132,37 @@
         document.getElementById('track-popup').style.display = 'none';
       }
     });
+
+    let selectedPlaylists = [];
+
+    // Handle playlist selection
+    document.querySelectorAll('.btn-select-playlist').forEach(button => {
+      button.addEventListener('click', function() {
+        const playlistId = this.getAttribute('data-playlist-id');
+
+        // Toggle selection
+        if (selectedPlaylists.includes(playlistId)) {
+          selectedPlaylists = selectedPlaylists.filter(id => id !== playlistId);
+          this.textContent = 'Select for Comparison';
+        } else {
+          selectedPlaylists.push(playlistId);
+          this.textContent = 'Selected';
+        }
+
+        console.log(selectedPlaylists); // For debugging
+      });
+    });
+
+    // Button for submitting comparison
+    document.getElementById('compare-playlists-btn').addEventListener('click', function() {
+      if (selectedPlaylists.length === 2) {
+        window.location.href = `/compare_playlists?playlist_ids=${selectedPlaylists.join(',')}`;
+      } else {
+        alert('Please select exactly two playlists to compare.');
+      }
+    });
+
+
   </script>
 </body>
 {% endblock %}

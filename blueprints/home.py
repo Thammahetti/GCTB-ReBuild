@@ -4,6 +4,9 @@ import spotipy
 from services.spotify_oauth import sp_oauth, get_spotify_object
 from spotipy.oauth2 import SpotifyClientCredentials
 from services.model import db, Playlist, User
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import plotly.express as px
 
 home_bp = Blueprint('home', __name__)
 
@@ -173,3 +176,106 @@ def my_playlists():
 
     return render_template('my_playlists.html', playlists=playlist_details)
 
+
+@home_bp.route('/compare_playlists')
+def compare_playlists():
+    playlist_ids = request.args.get('playlist_ids').split(',')
+
+    if len(playlist_ids) != 2:
+        return "Please select exactly two playlists for comparison.", 400
+
+    # Fetch the tracks for both playlists
+    tracks_playlist_1 = get_tracks_from_playlist(playlist_ids[0])
+    tracks_playlist_2 = get_tracks_from_playlist(playlist_ids[1])
+
+    # Find common tracks
+    common_tracks = tracks_playlist_1.intersection(tracks_playlist_2)
+    common_count = len(common_tracks)
+
+    # Calculate similarity percentage
+    total_tracks_1 = len(tracks_playlist_1)
+    total_tracks_2 = len(tracks_playlist_2)
+    similarity_percentage = (common_count / (min(total_tracks_1, total_tracks_2) + 0.1)) * 100
+
+    # Fetch playlist details
+    playlists = get_playlists_by_ids(playlist_ids)
+
+    # Prepare data for the graph
+    playlist_data = {
+        'playlist_1': {
+            'name': playlists[0]['name'],
+            'total_tracks': total_tracks_1,
+            'common_tracks': common_count,
+            'similarity_percentage': similarity_percentage,
+        },
+        'playlist_2': {
+            'name': playlists[1]['name'],
+            'total_tracks': total_tracks_2,
+            'common_tracks': common_count,
+            'similarity_percentage': similarity_percentage,
+        },
+    }
+
+    # Create the graph using Plotly
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=[playlists[0]['name'], playlists[1]['name']],
+        y=[total_tracks_1, total_tracks_2],
+        name='Total Tracks',
+        marker_color='blue'
+    ))
+
+    fig.add_trace(go.Bar(
+        x=[playlists[0]['name'], playlists[1]['name']],
+        y=[common_count, common_count],
+        name='Common Tracks',
+        marker_color='green'
+    ))
+
+    fig.update_layout(
+        title="Track Comparison Between Playlists",
+        xaxis_title="Playlist",
+        yaxis_title="Number of Tracks",
+        barmode="group",
+        template="plotly_dark",
+    )
+
+    # Render the comparison page with the graph
+    return render_template('compare_playlist.html', playlists=playlists, playlist_data=playlist_data, graph=fig.to_html())
+
+def get_playlists_by_ids(playlist_ids):
+    playlists = []
+    
+    # Make requests to the Spotify API to get the details of the playlists by their IDs
+    for playlist_id in playlist_ids:
+        try:
+            playlist = senza_login.playlist(playlist_id)  # Assuming 'senza_login' is a Spotify instance
+            playlists.append({
+                'id': playlist['id'],
+                'name': playlist['name'],
+                'owner': playlist['owner']['display_name'],
+                'images': playlist.get('images', [{'url': '/static/default-image.jpg'}]),
+                'external_urls': playlist.get('external_urls', {}).get('spotify', ''),
+            })
+        except Exception as e:
+            print(f"Error fetching playlist {playlist_id}: {e}")
+    
+    return playlists
+def get_tracks_from_playlist(playlist_id):
+    """
+    Fetches the tracks for a given playlist and returns a list of track names.
+    """
+    try:
+        playlist = senza_login.playlist_tracks(playlist_id)
+        tracks = playlist.get('items', [])
+        track_names = set()
+
+        for track in tracks:
+            track_name = track['track']['name']
+            track_names.add(track_name.lower())  # Normalize track names by converting them to lowercase
+
+        return track_names
+    except Exception as e:
+        print(f"Error fetching tracks for playlist {playlist_id}: {e}")
+        return set()
