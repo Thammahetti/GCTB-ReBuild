@@ -37,7 +37,7 @@
         <p id="popup-artist"></p>
         <p id="popup-album"></p>
         <a href="#" id="popup-spotify-link">Listen on Spotify</a>
-        <!-- Add Playlist Button -->
+        <!-- Modify Add Playlist Button in the Popup -->
         <button id="add-playlist-btn" class="btn-add-playlist">Add Playlist</button>
       </div>
     </div>
@@ -82,6 +82,7 @@
         document.getElementById('popup-album').innerText = "Album: " + albumName;
         document.getElementById('popup-image').src = imageUrl;
         document.getElementById('popup-spotify-link').setAttribute('data-playlist-id', playlistId);
+        document.getElementById('add-playlist-btn').setAttribute('data-playlist-id', playlistId); // Set the playlist ID on the button
   
         document.getElementById('track-popup').style.display = 'flex';
       });
@@ -95,6 +96,7 @@
       }
     });
   
+    // Modify the Add Playlist button functionality in the popup
     document.getElementById('add-playlist-btn').addEventListener('click', function() {
       const playlistId = this.getAttribute('data-playlist-id');
   

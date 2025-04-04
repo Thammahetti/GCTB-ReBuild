@@ -3,15 +3,12 @@
 {% extends "nav.html" %}
 
 {% block content %}
-
 <head>
-
     <title>Your Playlists</title>
-   
     <link rel="stylesheet" href="../static/css/my_playlist.css">
 </head>
 
-<body>
+<body style="margin-top: 100px;">
     <div class="container mt-6 spotify-playlists">
         <h2>Your Playlists</h2>
         
@@ -21,7 +18,17 @@
                     <div class="item">
                         <img src="{{ playlist.image_url }}" alt="{{ playlist.name }}">
                         <h4>{{ playlist.name }}</h4>
-                        <a href="{{ playlist.url }}" class="btn btn-primary" target="_blank">Open Playlist</a>
+                        <p>By: Spotify</p>
+                        <div class="play">
+                            <a href="#" class="track-link"
+                               data-track-name="{{ playlist.name }}"
+                               data-artist-name="Spotify"
+                               data-album-name="{{ playlist.name }}"
+                               data-image="{{ playlist.image_url }}"
+                               data-playlist-id="{{ playlist.id }}"> <!-- Ensure 'id' is provided in backend -->
+                                <span class="fa fa-play"></span> 
+                            </a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -30,10 +37,73 @@
         {% endif %}
     </div>
 
- 
+    <!-- Pop-up Modal -->
+    <div id="track-popup" class="track-popup">
+        <div class="track-popup-content">
+            <span class="close-btn" id="close-popup">&times;</span>
+            <img id="popup-image" src="" alt="Track Image">
+            <div id="popup-details">
+                <h2 id="popup-title"></h2>
+                <p id="popup-artist"></p>
+                <p id="popup-album"></p>
+                <a href="javascript:void(0);" id="popup-spotify-link">Listen on Spotify</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
+    <script>
+        // Ensure DOM is loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.track-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const trackName = this.getAttribute('data-track-name');
+                    const artistName = this.getAttribute('data-artist-name');
+                    const albumName = this.getAttribute('data-album-name');
+                    const imageUrl = this.getAttribute('data-image');
+                    const playlistId = this.getAttribute('data-playlist-id');
+
+                    console.log("Setting playlist ID in popup:", playlistId); // DEBUG
+
+                    // Populate modal content
+                    document.getElementById('popup-title').innerText = trackName;
+                    document.getElementById('popup-artist').innerText = "Artist: " + artistName;
+                    document.getElementById('popup-album').innerText = "Album: " + albumName;
+                    document.getElementById('popup-image').src = imageUrl;
+                    document.getElementById('popup-spotify-link').setAttribute('data-playlist-id', playlistId);
+
+                    document.getElementById('track-popup').style.display = 'flex';
+                });
+            });
+
+            // Handle redirect when "Listen on Spotify" is clicked
+            document.getElementById('popup-spotify-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                const playlistId = this.getAttribute('data-playlist-id');
+
+                console.log("Clicked playlist ID:", playlistId); // DEBUG
+
+                if (playlistId) {
+                    const redirectUrl = `/brani_playlist?playlist_id=${playlistId}`;
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error("Playlist ID is missing.");
+                }
+            });
+
+            // Close popup handlers
+            document.getElementById('close-popup').addEventListener('click', function () {
+                document.getElementById('track-popup').style.display = 'none';
+            });
+
+            window.addEventListener('click', function (e) {
+                if (e.target === document.getElementById('track-popup')) {
+                    document.getElementById('track-popup').style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
-
-
-
 {% endblock %}
-</html>

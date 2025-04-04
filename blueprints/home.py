@@ -146,37 +146,30 @@ def add_playlist():
 # Route to display the playlists the user has saved
 @home_bp.route('/my_playlists')
 def my_playlists():
-    # Ensure the user is logged in (check session)
     if not session.get('user_id'):
-        return redirect(url_for('auth.logout_spotify'))  # Redirect if no user is logged in
+        return redirect(url_for('auth.logout_spotify'))
 
-    user_id = session.get('user_id')  # Get the user ID from the session
-
-    # Query the playlists saved by the user from the database
+    user_id = session.get('user_id')
     playlists = Playlist.query.filter_by(user_id=user_id).all()
 
-    # If no playlists found, return an appropriate message
     if not playlists:
         return render_template('my_playlists.html', playlists=None, message="You haven't added any playlists yet.")
-    
-    # Initialize the Spotify instance for searching (without user login)
-    sp = senza_login  # This is the Spotify instance without user authentication
+
+    sp = senza_login
 
     playlist_details = []
-    
+
     for playlist in playlists:
         try:
-            # Use the playlist method to fetch playlist details directly using the playlist_id
-            spotify_playlist = sp.playlist(playlist.playlist_id)  # Fetch the playlist details directly
-            
+            spotify_playlist = sp.playlist(playlist.playlist_id)
             playlist_details.append({
+                'id': playlist.playlist_id, 
                 'name': spotify_playlist['name'],
                 'url': spotify_playlist['external_urls']['spotify'],
                 'image_url': spotify_playlist['images'][0]['url'] if spotify_playlist['images'] else '/static/default-image.jpg'
             })
         except Exception as e:
-            # If there is an error fetching the playlist, log it and skip it
             print(f"Error fetching playlist {playlist.playlist_id}: {e}")
-    
+
     return render_template('my_playlists.html', playlists=playlist_details)
 

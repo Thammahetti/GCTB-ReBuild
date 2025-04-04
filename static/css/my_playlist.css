@@ -122,3 +122,286 @@ body {
     background-color: #1ed760;
     border-color: #1ed760;
 }
+.main-content {
+    margin-left: -90%;
+}
+.spotify-playlists {
+    padding: 20px 40px;
+    margin-left: -20px;
+}
+.spotify-playlists h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+.spotify-playlists .list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    overflow: hidden;
+    justify-content: center;
+}
+.spotify-playlists .list .item {
+    min-width: 170px;
+    width: 165px;
+    padding: 15px;
+    background-color: #181818;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all ease 0.4s;
+}
+.spotify-playlists .list .item:hover {
+    background-color: #252525;
+}
+.spotify-playlists .list .item img {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+.spotify-playlists .list .item .play {
+    position: relative;
+}
+.spotify-playlists .list .item .play .fa {
+    position: absolute;
+    right: 10px;
+    top: -60px;
+    padding: 18px;
+    background-color: #1db954;
+    border-radius: 100%;
+    opacity: 0;
+    transition: all ease 0.4s;
+}
+.spotify-playlists .list .item:hover .play .fa {
+    opacity: 1;
+    transform: translateY(-20px);
+}
+.spotify-playlists .list .item h4 {
+    color: #ffffff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.spotify-playlists .list .item p {
+    color: #989898;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 600;
+}
+.spotify-playlists hr {
+    margin: 70px 0px 0px;
+    border-color: #636363;
+}
+
+/* Background overlay when popup appears */
+.track-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup image */
+.track-popup img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Spotify link */
+#popup-spotify-link {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: rgb(7,83,0);
+    background: linear-gradient(0deg, rgba(7,83,0,1) 0%, rgba(0,0,0,1) 100%);
+    padding-bottom: 24%;
+    text-align: center;
+}
+
+.main-text {
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.main-text h1 {
+    font-size: 48px;
+    font-weight: bold;
+    color: rgb(39, 136, 0);
+    margin-bottom: 20px;
+}
+
+.main-text p {
+    font-size: 18px;
+    color: #bbb;
+    margin-bottom: 20px;
+}
+
+.search-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-search {
+    background: rgb(17,88,0);
+    background: linear-gradient(90deg, rgba(17,88,0,1) 0%, rgba(32,116,0,1) 100%);    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background: rgb(39, 136, 0);
+    transform: scale(1.05);
+}
+
+.track-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup content */
+.track-popup-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 350px;
+    color: #000;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
+}
+
+/* Popup image */
+.track-popup img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Spotify link */
+#popup-spotify-link {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#popup-spotify-link:hover {
+    background: #1ed760;
+    transform: scale(1.1);
+}
+
+.btn-add-playlist {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    padding: 12px 17px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-add-playlist:hover {
+    background: #1ed760;
+    transform: scale(1.1);
+}
+.playlist-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #1e1e1e; /* Sfondo scuro */
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-table thead {
+    background-color: #2a2a2a;
+}
+
+.playlist-table thead th {
+    padding: 15px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.playlist-table tbody tr {
+    border-bottom: 1px solid #333;
+    transition: background 0.3s ease;
+}
+
+.playlist-table tbody tr:hover {
+    background-color: #292929;
+}
+
+.playlist-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.playlist-table img {
+    border-radius: 8px;
+    display: block;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #1DB954; /* Verde Spotify */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #17a74a;
+}
