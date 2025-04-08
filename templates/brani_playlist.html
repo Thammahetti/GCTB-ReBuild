@@ -45,30 +45,10 @@
         <div class="charts-container">
             <h2>Analisi della Playlist</h2>
             
-            <div id="grafico-artisti"></div>
-            <div id="grafico-album"></div>
+            <!-- Bottone per navigare alla pagina dei grafici -->
+            <a href="/analisi/grafici?playlist_id={{ playlist_id }}" class="btn btn-primary">Visualizza i Grafici</a>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const playlistId = "{{ playlist_id }}";  // Assicurati che venga passato l'ID playlist dal backend
-            
-            // Richiesta per ottenere i grafici dalla playlist
-            fetch(`/grafici_playlist?playlist_id=${playlistId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Carica i grafici nella pagina se esistono
-                    if (data.grafico_artisti && data.grafico_album) {
-                        document.getElementById("grafico-artisti").innerHTML = data.grafico_artisti;
-                        document.getElementById("grafico-album").innerHTML = data.grafico_album;
-                    } else {
-                        console.error("Errore nel caricamento dei grafici.");
-                    }
-                })
-                .catch(error => console.error("Errore nella richiesta:", error));
-        });
-    </script>
 </body>
 
 {% endblock %}

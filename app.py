@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from services.model import db, User
 from blueprints.compare import compare_bp
+from blueprints.analisi import analisi_bp
 import secrets
 
 app = Flask(__name__)
@@ -34,7 +35,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(home_bp)
 app.register_blueprint(main_bp)
 app.register_blueprint(compare_bp)
-
+app.register_blueprint(analisi_bp, url_prefix='/analisi')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5002)

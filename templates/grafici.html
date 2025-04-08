@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "nav.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/index.css" rel="stylesheet">
+    <title>GCTB - Analisi Playlist</title>
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Analisi della Playlist</h1>
+
+        <h2>Distribuzione Temporale dei Brani</h2>
+        <div id="grafico-temporale">{{ grafico_temporale | safe }}</div>
+
+        <h2>Distribuzione della Durata dei Brani</h2>
+        <div id="grafico-durata">{{ grafico_durata | safe }}</div>
+
+        <h2>Distribuzione della Popolarità dei Brani</h2>
+        <div id="grafico-popolarita">{{ grafico_popolarita | safe }}</div>
+
+        <h2>Distribuzione degli Artisti</h2>
+        <div id="grafico-generi">{{ grafico_generi | safe }}</div>
+
+        <h2>Evoluzione della Popolarità nel Tempo</h2>
+        <div id="grafico-evoluzione-popolarita">{{ grafico_evoluzione_popolarita | safe }}</div>
+    </div>
+</body>
+
+{% endblock %}
+</html>
