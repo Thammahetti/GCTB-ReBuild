@@ -5,6 +5,7 @@ from blueprints.main_page import main_bp
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from services.model import db, User
+from blueprints.compare import compare_bp
 import secrets
 
 app = Flask(__name__)
@@ -32,7 +33,7 @@ with app.app_context():
 app.register_blueprint(auth_bp)
 app.register_blueprint(home_bp)
 app.register_blueprint(main_bp)
-
+app.register_blueprint(compare_bp)
 
 
 if __name__ == "__main__":
