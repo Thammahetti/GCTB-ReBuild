@@ -9,6 +9,7 @@ from blueprints.compare import compare_bp
 from blueprints.analisi import analisi_bp
 import secrets
 
+
 app = Flask(__name__)
 
 

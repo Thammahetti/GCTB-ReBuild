@@ -281,3 +281,16 @@ body {
 .btn-primary:hover {
     background: #17a74a;
 }
+
+.btn_compare{
+    background: #17a74a;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: large;
+}
+
+#btn_selezione{
+    margin-right: 125px;
+    margin-bottom: 15px;
+}

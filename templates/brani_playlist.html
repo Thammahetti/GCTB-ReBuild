@@ -23,7 +23,6 @@
                         <th>Nome Brano</th>
                         <th>Artisti</th>
                         <th>Album</th>
-                        <th>Ascolta su Spotify</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +32,6 @@
                             <td>{{ track.name }}</td>
                             <td>{{ track.artists }}</td>
                             <td>{{ track.album }}</td>
-                            <td><a href="{{ track.spotify_url }}" class="btn btn-primary" target="_blank">🎵 Ascolta</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -9,11 +9,12 @@
   <div class="main-text">
     <h1>Search Results</h1>
     <h4>You searched for "{{ query }}"</h4>
-    <button id="compare-playlists-btn">Compare Playlists</button>
+    <button id="compare-playlists-btn" class="btn_compare">Compare Playlists</button>
     <div class="spotify-playlists">
       <div class="list">
         {% for playlist in playlists %}
           <div class="item">
+            <input type="checkbox" class="btn-select-playlist" id="btn_selezione" data-playlist-id="{{ playlist['id'] }}">
             <img src="{{ playlist['images'][0]['url'] }}" alt="{{ playlist['name'] }}">
             <div class="play">
               <a href="#" class="track-link" data-track-name="{{ playlist['name'] }}" data-artist-name="{{ playlist['owner']['display_name'] }}" data-album-name="{{ playlist['name'] }}" data-image="{{ playlist['images'][0]['url'] }}" data-spotify-url="{{ playlist['external_urls']['spotify'] }}" data-playlist-id="{{ playlist['id'] }}">
@@ -23,8 +24,7 @@
             <h4>{{ playlist['name'] }}</h4>
             <p>By: {{ playlist['owner']['display_name'] }}</p>
 
-            <!-- Add select button for comparison -->
-            <button class="btn-select-playlist" data-playlist-id="{{ playlist['id'] }}">Select for Comparison</button>
+            </label>
           </div>
         {% endfor %}
 

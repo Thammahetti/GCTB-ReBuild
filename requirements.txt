@@ -2,4 +2,6 @@ flask
 spotipy
 flask_sqlalchemy
 flask_login
+matplotlib
 plotly
+pandas

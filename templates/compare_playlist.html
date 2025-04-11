@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  {% extends "nav.html" %}
+{% extends "nav.html" %}
 
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Confronto Playlist</title>
@@ -24,11 +24,11 @@
     <h1>Confronto tra Playlist</h1>
 
     <!-- Bottoni per ciascuna analisi -->
-    <button onclick="loadGraph('common_tracks')">Brani in Comune</button>
-    <button onclick="loadGraph('common_artists')">Artisti in Comune</button>
-    <button onclick="loadGraph('popularity')">Popolarità Media</button>
-    <button onclick="loadGraph('genres')">Generi Musicali</button>
-    <button onclick="loadGraph('temporal')">Distribuzione Temporale</button>
+    <button class="btn-add-playlist" onclick="loadGraph('common_tracks')">Brani in Comune</button>
+    <button class="btn-add-playlist" onclick="loadGraph('common_artists')">Artisti in Comune</button>
+    <button class="btn-add-playlist" onclick="loadGraph('popularity')">Popolarità Media</button>
+    <button class="btn-add-playlist" onclick="loadGraph('genres')">Generi Musicali</button>
+    <button class="btn-add-playlist" onclick="loadGraph('temporal')">Distribuzione Temporale</button>
 
     <!-- Div dove verranno iniettati i grafici -->
     <div class="graph-container" id="graph"></div>
