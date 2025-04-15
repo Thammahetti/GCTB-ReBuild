@@ -19,6 +19,8 @@
             <div class="list">
                 {% for playlist in playlists %}
                     <div class="item">
+                        <input type="checkbox" class="btn-select-playlist" id="btn_selezione" data-playlist-id="{{ playlist['id'] }}">
+
                         <img src="{{ playlist.image_url }}" alt="{{ playlist.name }}">
                         <h4>{{ playlist.name }}</h4>
                         <p>By: Spotify</p>
@@ -34,7 +36,6 @@
                         </div>
 
                         <!-- Select for Comparison Button -->
-                        <button class="btn-select-playlist" data-playlist-id="{{ playlist.id }}">Select for Comparison</button>
                     </div>
                 {% endfor %}
             </div>

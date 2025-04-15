@@ -56,7 +56,7 @@ def generare_grafico_generi(tracks):
     artisti = [artist for track in tracks for artist in track['artists'].split(', ')]
     artisti_counter = Counter(artisti).most_common(10)
     df_artisti = pd.DataFrame(artisti_counter, columns=['Artista', 'Conteggio'])
-    fig_artisti = px.bar(df_artisti, x='Artista', y='Conteggio', title='Top 10 Artisti nella Playlist')
+    fig_artisti = px.bar(df_artisti, x='Artista', y='Conteggio', title='Top  Artisti nella Playlist')
     return fig_artisti
 
 def generare_evoluzione_popolarita(tracks):
