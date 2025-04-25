@@ -1,0 +1,38 @@
+{% extends "nav.html" %}
+
+{% block content %}
+<body style="margin-top: 100px;">
+    <form method="POST" action="/suggest">
+        <label for="artist_name">Artista:</label>
+        <input type="text" name="artist_name" placeholder="Inserisci un artista" />
+
+        <label for="track_name">Brano:</label>
+        <input type="text" name="track_name" placeholder="Inserisci un brano" />
+
+        <label for="genre">Genere:</label>
+        <input type="text" name="genre" placeholder="Inserisci un genere" />
+
+        <button type="submit">Suggerisci</button>
+    </form>
+
+    {% if recommendations %}
+        <h2>Brani suggeriti:</h2>
+        <ul>
+            {% for track in recommendations %}
+                <li>
+                    <img src="{{ track.image }}" alt="{{ track.name }}" width="50" height="50">
+                    <p>{{ track.name }} - {{ track.artist }}</p>
+                    <a href="{{ track.external_url }}" target="_blank">Ascolta su Spotify</a>
+                    <input type="checkbox" name="selected_tracks" value="{{ track.id }}"> Aggiungi alla playlist
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Form per creare una nuova playlist -->
+        <h3>Crea una nuova playlist</h3>
+        <input type="text" name="playlist_name" placeholder="Nome della playlist">
+        <textarea name="playlist_description" placeholder="Descrizione della playlist"></textarea>
+        <button type="submit" name="create_playlist" value="true">Crea Playlist</button>
+    {% endif %}
+{% endblock %}
+</body>

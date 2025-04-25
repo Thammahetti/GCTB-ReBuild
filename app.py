@@ -8,6 +8,7 @@ from services.model import db, User
 from blueprints.compare import compare_bp
 from blueprints.analisi import analisi_bp
 import secrets
+from blueprints.suggest import suggest_bp
 
 
 app = Flask(__name__)
@@ -36,6 +37,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(home_bp)
 app.register_blueprint(main_bp)
 app.register_blueprint(compare_bp)
+app.register_blueprint(suggest_bp)
 app.register_blueprint(analisi_bp, url_prefix='/analisi')
 
 if __name__ == "__main__":

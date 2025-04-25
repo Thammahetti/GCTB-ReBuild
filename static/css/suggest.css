@@ -1,0 +1,95 @@
+/* Assicurati che il CSS sia applicato solo alla sezione dei suggerimenti */
+.suggest-container {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.suggest-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1db954; /* Colore verde Spotify */
+    margin-bottom: 20px;
+}
+
+.suggest-container form {
+    margin-bottom: 30px;
+}
+
+.suggest-container label {
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.suggest-container input {
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.suggest-container button {
+    background-color: #1db954;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.suggest-container button:hover {
+    background-color: #17a74a;
+}
+
+.recommendations {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.track {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.track:hover {
+    transform: scale(1.05);
+}
+
+.track img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.track h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 15px;
+}
+
+.track p {
+    color: #989898;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.track a {
+    color: #1db954;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.track a:hover {
+    color: #17a74a;
+}
+
+.audio-player {
+    margin-top: 15px;
+}

@@ -17,17 +17,20 @@
             <input type="checkbox" class="btn-select-playlist" id="btn_selezione" data-playlist-id="{{ playlist['id'] }}">
             <img src="{{ playlist['images'][0]['url'] }}" alt="{{ playlist['name'] }}">
             <div class="play">
-              <a href="#" class="track-link" data-track-name="{{ playlist['name'] }}" data-artist-name="{{ playlist['owner']['display_name'] }}" data-album-name="{{ playlist['name'] }}" data-image="{{ playlist['images'][0]['url'] }}" data-spotify-url="{{ playlist['external_urls']['spotify'] }}" data-playlist-id="{{ playlist['id'] }}">
+              <a href="#" class="track-link" 
+                 data-track-name="{{ playlist['name'] }}" 
+                 data-artist-name="{{ playlist['owner']['display_name'] }}" 
+                 data-album-name="{{ playlist['name'] }}" 
+                 data-image="{{ playlist['images'][0]['url'] }}" 
+                 data-playlist-url="{{ playlist['external_urls']['spotify'] }}" 
+                 data-playlist-id="{{ playlist['id'] }}">
                 <span class="fa fa-play"></span>
               </a>
             </div>
             <h4>{{ playlist['name'] }}</h4>
             <p>By: {{ playlist['owner']['display_name'] }}</p>
-
-            </label>
           </div>
         {% endfor %}
-
       </div>
     </div>
   </div>
@@ -42,8 +45,8 @@
         <p id="popup-artist"></p>
         <p id="popup-album"></p>
         <a href="#" id="popup-spotify-link">Listen on Spotify</a>
-        <!-- Modify Add Playlist Button in the Popup -->
         <button id="add-playlist-btn" class="btn-add-playlist">Add Playlist</button>
+        <button class="btn-share" id="share-btn">Condividi</button>
       </div>
     </div>
   </div>
@@ -64,35 +67,61 @@
           <a href="{{ url_for('home.search', q='APT') }}" class="btn-search">ROSÉ & Bruno Mars - APT.</a>
           <a href="{{ url_for('home.search', q='Die With A Smile ') }}" class="btn-search">Lady Gaga, Bruno Mars - Die With A Smile </a>
           <a href="{{ url_for('home.search', q='Tell Me') }}" class="btn-search">Tell Me - Karan Aujla</a>
+
         </div>
       </div>
     </div>
   </div>
-  {% endif %}
-
+  
+ 
+  <!-- Suggerimenti Section -->
+  <div class="suggestions-section">
+    <h2>Suggerimenti Musicali</h2>
+    <p>Get personalized music recommendations based on your preferences. Explore new tracks, artists, and genres that suit your mood and taste!</p>
+    <a href="{{ url_for('suggest.suggest_tracks') }}" class="btn-search">Try Suggestions</a>
+  </div>
+</div>
+{% endif %}
   <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
   <script>
+    // Funzione di condivisione
+    function sharePlaylist(playlistUrl) {
+      // Copia il link negli appunti
+      navigator.clipboard.writeText(playlistUrl).then(function() {
+        alert("Link copiato negli appunti!");
+      }).catch(function(err) {
+        console.error("Errore nel copiare il link: ", err);
+      });
+    }
+
     document.querySelectorAll('.track-link').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault(); 
-  
+
         const trackName = this.getAttribute('data-track-name');
         const artistName = this.getAttribute('data-artist-name');
         const albumName = this.getAttribute('data-album-name');
         const imageUrl = this.getAttribute('data-image');
-        const playlistId = this.getAttribute('data-playlist-id');
-  
+        const playlistUrl = this.getAttribute('data-playlist-url');  // Recupera l'URL della playlist
+        const playlistId = this.getAttribute('data-playlist-id');    // Recupera l'ID della playlist
+
         document.getElementById('popup-title').innerText = trackName;
         document.getElementById('popup-artist').innerText = "Artist: " + artistName;
         document.getElementById('popup-album').innerText = "Album: " + albumName;
         document.getElementById('popup-image').src = imageUrl;
-        document.getElementById('popup-spotify-link').setAttribute('data-playlist-id', playlistId);
+        document.getElementById('popup-spotify-link').setAttribute('href', playlistUrl); // Imposta il link di Spotify
+        document.getElementById('popup-spotify-link').setAttribute('data-playlist-id', playlistId); // Imposta l'ID della playlist
         document.getElementById('add-playlist-btn').setAttribute('data-playlist-id', playlistId); // Set the playlist ID on the button
-  
+
+        // Aggiungi il link per la condivisione
+        document.getElementById('share-btn').addEventListener('click', function() {
+          sharePlaylist(playlistUrl);  // Chiama la funzione per copiare il link
+        });
+
         document.getElementById('track-popup').style.display = 'flex';
       });
     });
-  
+
     document.getElementById('popup-spotify-link').addEventListener('click', function(e) {
       e.preventDefault();
       const playlistId = this.getAttribute('data-playlist-id');
@@ -100,29 +129,7 @@
         window.location.href = `/brani_playlist?playlist_id=${playlistId}`;
       }
     });
-  
-    // Modify the Add Playlist button functionality in the popup
-    document.getElementById('add-playlist-btn').addEventListener('click', function() {
-      const playlistId = this.getAttribute('data-playlist-id');
-  
-      fetch(`/add_playlist`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ playlist_id: playlistId })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Playlist added successfully!');
-        } else {
-          alert('Error adding playlist: ' + data.message);
-        }
-      })
-      .catch(error => console.error('Error:', error));
-    });
-  
+
     document.getElementById('close-popup').addEventListener('click', function() {
       document.getElementById('track-popup').style.display = 'none';
     });
@@ -161,8 +168,6 @@
         alert('Please select exactly two playlists to compare.');
       }
     });
-
-
   </script>
 </body>
 {% endblock %}
