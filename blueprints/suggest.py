@@ -1,6 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify
-from flask_login import login_required, current_user
-from services.model import db, Playlist, Track  # Assicurati di avere Track nel tuo modello
+from flask import Blueprint, request, render_template
 import spotipy
 from services.spotify_oauth import sp_oauth
 
@@ -63,21 +61,15 @@ def get_suggestions(artist_name=None, track_name=None, genre=None):
                     'id': track['id']
                 }
                 suggestions.append(suggestion)
+            return suggestions
         
-        return suggestions
+        return []
     except Exception as e:
         print(f"Error fetching suggestions: {e}")
         return []
 
 @suggest_bp.route('/suggest', methods=['GET', 'POST'])
-@login_required
 def suggest_tracks():
-    # Recupera le playlist dell'utente
-    user_playlists = Playlist.query.filter_by(user_id=current_user.id).all()
-
-    recommendations = []
-    seed_type = None
-
     if request.method == 'POST':
         artist_name = request.form.get('artist_name')
         track_name = request.form.get('track_name')
@@ -86,37 +78,6 @@ def suggest_tracks():
         recommendations = get_suggestions(artist_name, track_name, genre)
         seed_type = 'Artista' if artist_name else 'Brano' if track_name else 'Genere'
 
-    return render_template('suggest.html', user_playlists=user_playlists, recommendations=recommendations, seed_type=seed_type)
+        return render_template('suggest.html', recommendations=recommendations, seed_type=seed_type)
 
-@suggest_bp.route('/add_track_to_playlist', methods=['POST'])
-@login_required
-def add_track_to_playlist():
-    try:
-        track_id = request.form['track_id']
-        playlist_id = request.form['playlist_option']
-        new_playlist_name = request.form.get('new_playlist_name')
-
-        # Se l'utente ha scelto di creare una nuova playlist
-        if playlist_id == 'new':
-            if not new_playlist_name:
-                return jsonify({"error": "Nome playlist non valido"}), 400
-
-            # Crea una nuova playlist
-            new_playlist = Playlist(user_id=current_user.id, name=new_playlist_name)
-            db.session.add(new_playlist)
-            db.session.commit()
-            playlist_id = new_playlist.id
-
-        # Ottieni il brano e la playlist
-        track = Track.query.get(track_id)
-        playlist = Playlist.query.get(playlist_id)
-
-        if playlist and track:
-            playlist.tracks.append(track)
-            db.session.commit()
-            return jsonify({"message": "Brano aggiunto alla playlist con successo", "playlist_name": playlist.name})
-
-        return jsonify({"error": "Errore nell'aggiunta del brano alla playlist"}), 400
-    except Exception as e:
-        print(f"Errore nel backend: {e}")
-        return jsonify({"error": "Errore interno del server"}), 500
+    return render_template('suggest.html', recommendations=None, seed_type=None)
