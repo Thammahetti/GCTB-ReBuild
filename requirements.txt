@@ -5,3 +5,4 @@ flask_login
 matplotlib
 plotly
 pandas
+flask-migrate

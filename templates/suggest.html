@@ -1,8 +1,12 @@
 {% extends "nav.html" %}
 
 {% block content %}
-<body style="margin-top: 100px;">
-    <form method="POST" action="/suggest">
+<link href="../static/css/suggest.css" rel="stylesheet">
+<link href="../static/css/index.css" rel="stylesheet">
+
+<div style="margin-top: 100px;">
+    <!-- Form di suggerimento brani -->
+    <form method="POST" action="/suggest" class="suggest-container">
         <label for="artist_name">Artista:</label>
         <input type="text" name="artist_name" placeholder="Inserisci un artista" />
 
@@ -16,23 +20,186 @@
     </form>
 
     {% if recommendations %}
-        <h2>Brani suggeriti:</h2>
-        <ul>
-            {% for track in recommendations %}
-                <li>
-                    <img src="{{ track.image }}" alt="{{ track.name }}" width="50" height="50">
-                    <p>{{ track.name }} - {{ track.artist }}</p>
-                    <a href="{{ track.external_url }}" target="_blank">Ascolta su Spotify</a>
-                    <input type="checkbox" name="selected_tracks" value="{{ track.id }}"> Aggiungi alla playlist
-                </li>
-            {% endfor %}
-        </ul>
+    <h2>Brani suggeriti:</h2>
 
-        <!-- Form per creare una nuova playlist -->
-        <h3>Crea una nuova playlist</h3>
-        <input type="text" name="playlist_name" placeholder="Nome della playlist">
-        <textarea name="playlist_description" placeholder="Descrizione della playlist"></textarea>
-        <button type="submit" name="create_playlist" value="true">Crea Playlist</button>
+    <div class="spotify-playlists">
+        <div class="list">
+            {% for track in recommendations %}
+            <div class="item">
+                <a href="#" class="track-link"
+                   data-track-id="{{ track.id }}"
+                   data-track-name="{{ track.name }}"
+                   data-artist-name="{{ track.artist }}"
+                   data-album-name="{{ track.album if track.album else 'Unknown' }}"
+                   data-image="{{ track.image }}"
+                   data-track-url="{{ track.external_url }}">
+                    <img src="{{ track.image }}" alt="{{ track.name }}">
+                    <div class="play">
+                        <span class="fa fa-play"></span>
+                    </div>
+                </a>
+                <h4>{{ track.name }}</h4>
+                <p>By: {{ track.artist }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     {% endif %}
+</div>
+
+<!-- Popup dettagli brano -->
+<div id="track-popup" class="track-popup" style="display:none;">
+  <div class="track-popup-content">
+    <span class="close-btn" id="close-popup">&times;</span>
+    <img id="popup-image" src="" alt="Track Image">
+    <div id="popup-details">
+      <h2 id="popup-title"></h2>
+      <p id="popup-artist"></p>
+      <p id="popup-album"></p>
+      <a href="#" id="popup-spotify-link" target="_blank">Ascolta su Spotify</a>
+      <button type="button" id="open-playlist-popup" class="btn-add-playlist">Aggiungi alla Playlist</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup scelta playlist -->
+<div id="choose-playlist-popup" class="track-popup" style="display:none;">
+  <div class="track-popup-content">
+    <span class="close-btn" id="close-choose-popup">&times;</span>
+    <h2>Scegli Playlist</h2>
+
+    <form method="POST" action="/add_track_to_playlist" id="choose-playlist-form">
+      <input type="hidden" name="track_id" id="choose-form-track-id">
+    
+      <!-- Pulsante per creare nuova playlist -->
+      <button type="button" id="create-new-playlist-btn" style="margin-bottom: 10px;">Crea nuova playlist</button>
+    
+      <!-- Campo per inserire il nome della nuova playlist -->
+      <div id="new-playlist-name" style="display: none; margin-bottom: 20px;">
+        <label for="new_playlist_name">Nome nuova playlist:</label>
+        <input type="text" name="new_playlist_name" id="new_playlist_name" placeholder="Nome nuova playlist" />
+      </div>
+    
+      <!-- Lista delle playlist esistenti -->
+      <label for="playlist_option">Scegli una playlist:</label>
+      <select name="playlist_option" id="playlist_option">
+        {% for playlist in user_playlists %}
+          <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+        {% endfor %}
+      </select>
+    
+      <button type="submit" class="btn-add-playlist" style="margin-top: 20px;">Conferma Aggiunta</button>
+    </form>
+  </div>
+</div>
+
+<!-- Popup successo aggiunta alla playlist -->
+<div id="success-popup" class="track-popup" style="display:none;">
+  <div class="track-popup-content">
+    <span class="close-btn" id="close-success-popup">&times;</span>
+    <h2>Brano aggiunto con successo!</h2>
+    <p id="success-message"></p>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
+<script>
+  // Apertura popup dettagli brano
+  document.querySelectorAll('.track-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const trackName = this.getAttribute('data-track-name');
+      const artistName = this.getAttribute('data-artist-name');
+      const albumName = this.getAttribute('data-album-name');
+      const imageUrl = this.getAttribute('data-image');
+      const trackUrl = this.getAttribute('data-track-url');
+      const trackId = this.getAttribute('data-track-id');
+
+      document.getElementById('popup-title').innerText = trackName;
+      document.getElementById('popup-artist').innerText = "Artista: " + artistName;
+      document.getElementById('popup-album').innerText = "Album: " + albumName;
+      document.getElementById('popup-image').src = imageUrl;
+      document.getElementById('popup-spotify-link').href = trackUrl;
+      document.getElementById('choose-form-track-id').value = trackId; // passiamo track id anche al secondo popup
+
+      document.getElementById('track-popup').style.display = 'flex';
+    });
+  });
+
+  // Chiudi popup dettagli brano
+  document.getElementById('close-popup').addEventListener('click', function() {
+    document.getElementById('track-popup').style.display = 'none';
+  });
+
+  // Apertura popup scelta playlist
+  document.getElementById('open-playlist-popup').addEventListener('click', function() {
+    document.getElementById('track-popup').style.display = 'none';
+    document.getElementById('choose-playlist-popup').style.display = 'flex';
+  });
+
+  // Chiudi popup scelta playlist
+  document.getElementById('close-choose-popup').addEventListener('click', function() {
+    document.getElementById('choose-playlist-popup').style.display = 'none';
+  });
+
+  // Script per mostrare il campo "nuova playlist" quando si clicca il bottone
+  document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
+    document.getElementById('new-playlist-name').style.display = 'block';
+    document.getElementById('playlist_option').disabled = true; // disattiva la select delle playlist esistenti
+  }); 
+
+  // Selezione playlist o creazione nuova
+  const playlistSelect = document.getElementById('playlist_option');
+  const newPlaylistDiv = document.getElementById('new-playlist-name');
+
+  playlistSelect.addEventListener('change', function() {
+    if (this.value === 'new') {
+      newPlaylistDiv.style.display = 'block';
+    } else {
+      newPlaylistDiv.style.display = 'none';
+    }
+  });
+
+  // Chiudi popup se clicchi fuori
+  window.addEventListener('click', function(e) {
+    if (e.target === document.getElementById('track-popup')) {
+      document.getElementById('track-popup').style.display = 'none';
+    }
+    if (e.target === document.getElementById('choose-playlist-popup')) {
+      document.getElementById('choose-playlist-popup').style.display = 'none';
+    }
+    if (e.target === document.getElementById('success-popup')) {
+      document.getElementById('success-popup').style.display = 'none';
+    }
+  });
+
+  document.getElementById('choose-playlist-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Blocca il form tradizionale
+
+    const formData = new FormData(this);
+
+    fetch('/add_track_to_playlist', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Chiudi il pop-up di scelta playlist
+      document.getElementById('choose-playlist-popup').style.display = 'none';
+
+      // Mostra il popup di successo
+      document.getElementById('success-message').innerText = `Il brano è stato aggiunto alla playlist: ${data.playlist_name}`;
+      document.getElementById('success-popup').style.display = 'flex';
+    })
+    .catch(error => {
+      console.error('Errore:', error);
+    });
+  });
+
+  // Chiudi il popup di successo
+  document.getElementById('close-success-popup').addEventListener('click', function() {
+    document.getElementById('success-popup').style.display = 'none';
+  });
+</script>
+
 {% endblock %}
-</body>
