@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Le tue Playlist</h2>
+<ul>
+    {% for playlist in playlists %}
+        <li>{{ playlist.name }} - Creato il: {{ playlist.created_at }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Crea Nuova Playlist</h3>
+<form method="POST" action="/create_playlist">
+    <label for="playlist_name">Nome Playlist:</label>
+    <input type="text" name="playlist_name" required>
+    <button type="submit">Crea Playlist</button>
+</form>
+{% endblock %}
