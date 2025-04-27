@@ -102,84 +102,104 @@
   </div>
 </div>
 
-<!-- Redirect Button to Playlist Page -->
-<div style="margin-top: 20px;">
-  <a href="/playlists">
-    <button class="btn btn-primary">Vai alle tue Playlist</button>
-  </a>
-</div>
-
 <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Popup per visualizzare i dettagli del brano
-        const trackLinks = document.querySelectorAll('.track-link');
-        trackLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const trackId = this.dataset.trackId;
-                const trackName = this.dataset.trackName;
-                const artistName = this.dataset.artistName;
-                const albumName = this.dataset.albumName;
-                const trackUrl = this.dataset.trackUrl;
-                const trackImage = this.dataset.image;
+  // Apertura popup dettagli brano
+  document.querySelectorAll('.track-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const trackName = this.getAttribute('data-track-name');
+      const artistName = this.getAttribute('data-artist-name');
+      const albumName = this.getAttribute('data-album-name');
+      const imageUrl = this.getAttribute('data-image');
+      const trackUrl = this.getAttribute('data-track-url');
+      const trackId = this.getAttribute('data-track-id');
 
-                document.getElementById('popup-title').textContent = trackName;
-                document.getElementById('popup-artist').textContent = artistName;
-                document.getElementById('popup-album').textContent = albumName;
-                document.getElementById('popup-spotify-link').href = trackUrl;
-                document.getElementById('popup-image').src = trackImage;
-                document.getElementById('choose-form-track-id').value = trackId;
-                
-                document.getElementById('track-popup').style.display = 'block';
-            });
-        });
+      document.getElementById('popup-title').innerText = trackName;
+      document.getElementById('popup-artist').innerText = "Artista: " + artistName;
+      document.getElementById('popup-album').innerText = "Album: " + albumName;
+      document.getElementById('popup-image').src = imageUrl;
+      document.getElementById('popup-spotify-link').href = trackUrl;
+      document.getElementById('choose-form-track-id').value = trackId; // passiamo track id anche al secondo popup
 
-        // Chiudere il popup del brano
-        document.getElementById('close-popup').addEventListener('click', function() {
-            document.getElementById('track-popup').style.display = 'none';
-        });
-
-        // Mostrare e nascondere il popup per la playlist
-        document.getElementById('open-playlist-popup').addEventListener('click', function() {
-            document.getElementById('choose-playlist-popup').style.display = 'block';
-        });
-
-        document.getElementById('close-choose-popup').addEventListener('click', function() {
-            document.getElementById('choose-playlist-popup').style.display = 'none';
-        });
-
-        // Creare nuova playlist
-        document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
-            document.getElementById('new-playlist-name').style.display = 'block';
-        });
-
-        // Aggiungere il brano alla playlist
-        document.getElementById('choose-playlist-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            fetch('/add_track_to_playlist', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    document.getElementById('success-message').textContent = data.message;
-                    document.getElementById('success-popup').style.display = 'block';
-                    setTimeout(() => {
-                        document.getElementById('success-popup').style.display = 'none';
-                    }, 2000);
-                } else if (data.error) {
-                    alert(data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error adding track to playlist:', error);
-                alert('C\'è stato un errore nell\'aggiungere il brano alla playlist. Riprova.');
-            });
-        });
+      document.getElementById('track-popup').style.display = 'flex';
     });
+  });
+
+  // Chiudi popup dettagli brano
+  document.getElementById('close-popup').addEventListener('click', function() {
+    document.getElementById('track-popup').style.display = 'none';
+  });
+
+  // Apertura popup scelta playlist
+  document.getElementById('open-playlist-popup').addEventListener('click', function() {
+    document.getElementById('track-popup').style.display = 'none';
+    document.getElementById('choose-playlist-popup').style.display = 'flex';
+  });
+
+  // Chiudi popup scelta playlist
+  document.getElementById('close-choose-popup').addEventListener('click', function() {
+    document.getElementById('choose-playlist-popup').style.display = 'none';
+  });
+
+  // Script per mostrare il campo "nuova playlist" quando si clicca il bottone
+  document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
+    document.getElementById('new-playlist-name').style.display = 'block';
+    document.getElementById('playlist_option').disabled = true; // disattiva la select delle playlist esistenti
+  }); 
+
+  // Selezione playlist o creazione nuova
+  const playlistSelect = document.getElementById('playlist_option');
+  const newPlaylistDiv = document.getElementById('new-playlist-name');
+
+  playlistSelect.addEventListener('change', function() {
+    if (this.value === 'new') {
+      newPlaylistDiv.style.display = 'block';
+    } else {
+      newPlaylistDiv.style.display = 'none';
+    }
+  });
+
+  // Chiudi popup se clicchi fuori
+  window.addEventListener('click', function(e) {
+    if (e.target === document.getElementById('track-popup')) {
+      document.getElementById('track-popup').style.display = 'none';
+    }
+    if (e.target === document.getElementById('choose-playlist-popup')) {
+      document.getElementById('choose-playlist-popup').style.display = 'none';
+    }
+    if (e.target === document.getElementById('success-popup')) {
+      document.getElementById('success-popup').style.display = 'none';
+    }
+  });
+
+  document.getElementById('choose-playlist-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Blocca il form tradizionale
+
+    const formData = new FormData(this);
+
+    fetch('/add_track_to_playlist', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Chiudi il pop-up di scelta playlist
+      document.getElementById('choose-playlist-popup').style.display = 'none';
+
+      // Mostra il popup di successo
+      document.getElementById('success-message').innerText = `Il brano è stato aggiunto alla playlist: ${data.playlist_name}`;
+      document.getElementById('success-popup').style.display = 'flex';
+    })
+    .catch(error => {
+      console.error('Errore:', error);
+    });
+  });
+
+  // Chiudi il popup di successo
+  document.getElementById('close-success-popup').addEventListener('click', function() {
+    document.getElementById('success-popup').style.display = 'none';
+  });
 </script>
+
 {% endblock %}
