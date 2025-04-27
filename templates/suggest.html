@@ -70,26 +70,19 @@
 
     <form method="POST" action="/add_track_to_playlist" id="choose-playlist-form">
       <input type="hidden" name="track_id" id="choose-form-track-id">
-    
-      <!-- Pulsante per creare nuova playlist -->
-      <button type="button" id="create-new-playlist-btn" style="margin-bottom: 10px;">Crea nuova playlist</button>
-    
-      <!-- Campo per inserire il nome della nuova playlist -->
-      <div id="new-playlist-name" style="display: none; margin-bottom: 20px;">
-        <label for="new_playlist_name">Nome nuova playlist:</label>
-        <input type="text" name="new_playlist_name" id="new_playlist_name" placeholder="Nome nuova playlist" />
-      </div>
-    
-      <!-- Lista delle playlist esistenti -->
+  
+  
+      <!-- List of existing playlists -->
       <label for="playlist_option">Scegli una playlist:</label>
       <select name="playlist_option" id="playlist_option">
-        {% for playlist in user_playlists %}
+          <option value="">-- Seleziona una playlist --</option>
+          {% for playlist in user_playlists_suggested %}
           <option value="{{ playlist.id }}">{{ playlist.name }}</option>
-        {% endfor %}
+      {% endfor %}
       </select>
-    
+  
       <button type="submit" class="btn-add-playlist" style="margin-top: 20px;">Conferma Aggiunta</button>
-    </form>
+  </form>
   </div>
 </div>
 
@@ -151,8 +144,10 @@
 
         // Creare nuova playlist
         document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
-            document.getElementById('new-playlist-name').style.display = 'block';
-        });
+        // Show the new playlist name field
+        document.getElementById('new-playlist-name').style.display = 'block';
+        document.getElementById('playlist_option').disabled = true; // Disable the existing playlist dropdown
+    });
 
         // Aggiungere il brano alla playlist
         document.getElementById('choose-playlist-form').addEventListener('submit', function(e) {

@@ -1,10 +1,12 @@
-{% extends "base.html" %}
+{% extends "nav.html" %}
 
 {% block content %}
+<body style="margin-top: 100px;">
+    
 <h2>Le tue Playlist</h2>
 <ul>
     {% for playlist in playlists %}
-        <li>{{ playlist.name }} - Creato il: {{ playlist.created_at }}</li>
+        <li><a href="#" class="playlist-item" data-playlist-id="{{ playlist.id }}">{{ playlist.name }}</a></li>
     {% endfor %}
 </ul>
 
@@ -14,4 +16,159 @@
     <input type="text" name="playlist_name" required>
     <button type="submit">Crea Playlist</button>
 </form>
+
+<!-- Popup container (hidden by default) -->
+<div id="track-popup" class="popup">
+    <div class="popup-content">
+        <h3>Tracks in Playlist</h3>
+        <ul id="track-list"></ul>
+        <button id="close-popup">Close</button>
+    </div>
+</div>
+</body>
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const popup = document.getElementById('track-popup');
+        const closeButton = document.getElementById('close-popup');
+        const trackList = document.getElementById('track-list');
+
+        // Close popup
+        closeButton.addEventListener('click', function() {
+            popup.style.display = 'none';
+        });
+
+        // Open popup and fetch tracks for clicked playlist
+        document.querySelectorAll('.playlist-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const playlistId = this.getAttribute('data-playlist-id');
+
+                fetch(`/playlist_tracks/${playlistId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.tracks) {
+                            trackList.innerHTML = '';
+                            data.tracks.forEach(track => {
+                                const listItem = document.createElement('li');
+                                listItem.innerHTML = `
+                                    <strong>${track.name}</strong> by ${track.artist}<br>
+                                    <img src="${track.image}" alt="${track.name}" style="width: 50px;">
+                                    <a href="${track.external_url}" target="_blank">Listen</a>
+                                `;
+                                trackList.appendChild(listItem);
+                            });
+                            popup.style.display = 'block';
+                        }
+                    })
+                    .catch(error => console.error('Error fetching tracks:', error));
+            });
+        });
+    });
+    
+</script>
+<style>
+    /* Generale */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f4f7f9;
+        color: #333;
+        padding: 20px;
+    }
+    
+    /* Titoli */
+    h2, h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    /* Lista Playlist */
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    li {
+        background: #ffffff;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: background 0.3s, transform 0.3s;
+    }
+    
+    li:hover {
+        background: #e0f7fa;
+        transform: scale(1.02);
+    }
+    
+    a.playlist-item {
+        text-decoration: none;
+        color: #00796b;
+        font-weight: bold;
+        display: block;
+    }
+    
+    /* Form Creazione Playlist */
+
+    
+
+   
+    
+    button:hover {
+        background: #004d40;
+    }
+    
+    /* Popup */
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 60px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .popup-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: fadeIn 0.4s;
+    }
+    
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+    
+    /* Lista tracce */
+    #track-list li {
+        margin-bottom: 15px;
+    }
+    
+    #track-list img {
+        margin-top: 5px;
+        border-radius: 8px;
+    }
+    
+    /* Bottone Close */
+    #close-popup {
+        margin-top: 20px;
+        background: #e53935;
+    }
+    
+    #close-popup:hover {
+        background: #b71c1c;
+    }
+    </style>
+    </style>
+{% endblock %}
 {% endblock %}

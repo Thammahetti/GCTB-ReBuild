@@ -41,4 +41,4 @@ app.register_blueprint(suggest_bp)
 app.register_blueprint(analisi_bp, url_prefix='/analisi')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5000)
