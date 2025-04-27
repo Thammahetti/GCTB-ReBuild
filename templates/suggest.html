@@ -70,22 +70,35 @@
 
     <form method="POST" action="/add_track_to_playlist" id="choose-playlist-form">
       <input type="hidden" name="track_id" id="choose-form-track-id">
-
-      <label for="playlist_option">Playlist:</label>
+    
+      <!-- Pulsante per creare nuova playlist -->
+      <button type="button" id="create-new-playlist-btn" style="margin-bottom: 10px;">Crea nuova playlist</button>
+    
+      <!-- Campo per inserire il nome della nuova playlist -->
+      <div id="new-playlist-name" style="display: none; margin-bottom: 20px;">
+        <label for="new_playlist_name">Nome nuova playlist:</label>
+        <input type="text" name="new_playlist_name" id="new_playlist_name" placeholder="Nome nuova playlist" />
+      </div>
+    
+      <!-- Lista delle playlist esistenti -->
+      <label for="playlist_option">Scegli una playlist:</label>
       <select name="playlist_option" id="playlist_option">
-        <option value="new">Crea nuova playlist</option>
         {% for playlist in user_playlists %}
           <option value="{{ playlist.id }}">{{ playlist.name }}</option>
         {% endfor %}
       </select>
-
-      <div id="new-playlist-name" style="display: none; margin-top: 10px;">
-        <label for="new_playlist_name">Nome nuova playlist:</label>
-        <input type="text" name="new_playlist_name" placeholder="Nome nuova playlist" />
-      </div>
-
-      <button type="submit" class="btn-add-playlist">Conferma Aggiunta</button>
+    
+      <button type="submit" class="btn-add-playlist" style="margin-top: 20px;">Conferma Aggiunta</button>
     </form>
+  </div>
+</div>
+
+<!-- Popup successo aggiunta alla playlist -->
+<div id="success-popup" class="track-popup" style="display:none;">
+  <div class="track-popup-content">
+    <span class="close-btn" id="close-success-popup">&times;</span>
+    <h2>Brano aggiunto con successo!</h2>
+    <p id="success-message"></p>
   </div>
 </div>
 
@@ -129,6 +142,12 @@
     document.getElementById('choose-playlist-popup').style.display = 'none';
   });
 
+  // Script per mostrare il campo "nuova playlist" quando si clicca il bottone
+  document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
+    document.getElementById('new-playlist-name').style.display = 'block';
+    document.getElementById('playlist_option').disabled = true; // disattiva la select delle playlist esistenti
+  }); 
+
   // Selezione playlist o creazione nuova
   const playlistSelect = document.getElementById('playlist_option');
   const newPlaylistDiv = document.getElementById('new-playlist-name');
@@ -149,6 +168,37 @@
     if (e.target === document.getElementById('choose-playlist-popup')) {
       document.getElementById('choose-playlist-popup').style.display = 'none';
     }
+    if (e.target === document.getElementById('success-popup')) {
+      document.getElementById('success-popup').style.display = 'none';
+    }
+  });
+
+  document.getElementById('choose-playlist-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Blocca il form tradizionale
+
+    const formData = new FormData(this);
+
+    fetch('/add_track_to_playlist', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Chiudi il pop-up di scelta playlist
+      document.getElementById('choose-playlist-popup').style.display = 'none';
+
+      // Mostra il popup di successo
+      document.getElementById('success-message').innerText = `Il brano è stato aggiunto alla playlist: ${data.playlist_name}`;
+      document.getElementById('success-popup').style.display = 'flex';
+    })
+    .catch(error => {
+      console.error('Errore:', error);
+    });
+  });
+
+  // Chiudi il popup di successo
+  document.getElementById('close-success-popup').addEventListener('click', function() {
+    document.getElementById('success-popup').style.display = 'none';
   });
 </script>
 
