@@ -83,16 +83,7 @@ def suggest_tracks():
         recommendations = get_suggestions(artist_name, track_name, genre)
         seed_type = 'Artista' if artist_name else 'Brano' if track_name else 'Genere'
 
-        # Aggiungi le tracce suggerite alla tabella Playlist_suggested
-        for track in recommendations:
-            existing_track = Playlist_suggested.query.filter_by(name=track['name'], user_id=current_user.id).first()
-            if not existing_track:
-                new_suggestion = Playlist_suggested(
-                    name=track['name'],
-                    user_id=current_user.id
-                )
-                db.session.add(new_suggestion)
-                db.session.commit()
+      
 
     # Pass Playlist_suggested data to the template
     user_playlists_suggested = Playlist_suggested.query.filter_by(user_id=current_user.id).all()

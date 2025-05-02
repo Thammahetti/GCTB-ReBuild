@@ -124,7 +124,7 @@
                 document.getElementById('popup-image').src = trackImage;
                 document.getElementById('choose-form-track-id').value = trackId;
                 
-                document.getElementById('track-popup').style.display = 'block';
+                document.getElementById('track-popup').style.display = 'flex';
             });
         });
 
@@ -135,7 +135,7 @@
 
         // Mostrare e nascondere il popup per la playlist
         document.getElementById('open-playlist-popup').addEventListener('click', function() {
-            document.getElementById('choose-playlist-popup').style.display = 'block';
+            document.getElementById('choose-playlist-popup').style.display = 'flex';
         });
 
         document.getElementById('close-choose-popup').addEventListener('click', function() {
@@ -145,7 +145,7 @@
         // Creare nuova playlist
         document.getElementById('create-new-playlist-btn').addEventListener('click', function() {
         // Show the new playlist name field
-        document.getElementById('new-playlist-name').style.display = 'block';
+        document.getElementById('new-playlist-name').style.display = 'flex';
         document.getElementById('playlist_option').disabled = true; // Disable the existing playlist dropdown
     });
 
@@ -162,7 +162,7 @@
             .then(data => {
                 if (data.message) {
                     document.getElementById('success-message').textContent = data.message;
-                    document.getElementById('success-popup').style.display = 'block';
+                    document.getElementById('success-popup').style.display = 'flex';
                     setTimeout(() => {
                         document.getElementById('success-popup').style.display = 'none';
                     }, 2000);

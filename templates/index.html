@@ -63,13 +63,48 @@
           <a href="{{ url_for('home.search', q='APT') }}" class="btn-search">ROSÉ & Bruno Mars - APT.</a>
           <a href="{{ url_for('home.search', q='Die With A Smile ') }}" class="btn-search">Lady Gaga, Bruno Mars - Die With A Smile </a>
           <a href="{{ url_for('home.search', q='Tell Me') }}" class="btn-search">Tell Me - Karan Aujla</a>
-          <a href="{{ url_for('suggest_bp.suggest_tracks') }}" class="btn-suggest">
-            Go to Suggest Music
-          </a>
+        
         </div>
       </div>
     </div>
+    
   </div>
+  <a href="{{ url_for('suggest_bp.suggest_tracks') }}" class="btn-suggest" style="
+  display: inline-block;
+  background-color: #00796b; /* Nice teal color */
+  color: #ffffff; /* White text color */
+  font-size: 16px; /* Text size */
+  padding: 12px 24px; /* Padding to make the button bigger */
+  border-radius: 8px; /* Rounded corners */
+  text-decoration: none; /* Remove underline from the link */
+  text-align: center; /* Center text inside the button */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+">
+
+Go to Suggest Music
+
+</a>
+
+<style>
+/* Hover effect to make the button interactive */
+.btn-suggest:hover {
+    background-color: #004d40; /* Darker teal on hover */
+    transform: translateY(-3px); /* Lift the button slightly */
+}
+
+/* Focus state for better accessibility */
+.btn-suggest:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.5); /* Highlight the button with a focus ring */
+}
+
+/* Active state for button press */
+.btn-suggest:active {
+    transform: translateY(2px); /* Slightly push the button down when clicked */
+}
+</style>
+
   {% endif %}
 
   <script src="https://kit.fontawesome.com/23cecef777.js" crossorigin="anonymous"></script>

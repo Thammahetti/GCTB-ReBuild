@@ -3,30 +3,42 @@
 {% block content %}
 <body style="margin-top: 100px;">
     
-<h2>Le tue Playlist</h2>
-<ul>
-    {% for playlist in playlists %}
-        <li><a href="#" class="playlist-item" data-playlist-id="{{ playlist.id }}">{{ playlist.name }}</a></li>
-    {% endfor %}
-</ul>
+    <div id="playlist-container">
+        <h2 id="playlist-title">Le tue Playlist</h2>
+        <ul id="playlist-list">
+            {% for playlist in playlists %}
+                <li class="playlist-item" id="playlist-{{ playlist.id }}" data-playlist-id="{{ playlist.id }}">
+                    <a href="#" id="playlist-link-{{ playlist.id }}" class="playlist-link">{{ playlist.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
 
-<h3>Crea Nuova Playlist</h3>
-<form method="POST" action="/create_playlist">
-    <label for="playlist_name">Nome Playlist:</label>
-    <input type="text" name="playlist_name" required>
-    <button type="submit">Crea Playlist</button>
-</form>
-
-<!-- Popup container (hidden by default) -->
-<div id="track-popup" class="popup">
-    <div class="popup-content">
-        <h3>Tracks in Playlist</h3>
-        <ul id="track-list"></ul>
-        <button id="close-popup">Close</button>
+        <h3 id="create-playlist-title">Crea Nuova Playlist</h3>
+        <form method="POST" action="/create_playlist" id="create-playlist-form">
+            <label for="playlist_name" id="playlist-name-label">Nome Playlist:</label>
+            <input type="text" name="playlist_name" id="playlist-name-input" required>
+            <button type="submit" id="create-playlist-btn">Crea Playlist</button>
+        </form>
     </div>
-</div>
+
+    <!-- Popup container (hidden by default) -->
+    <div id="track-popup" class="popup">
+        <div class="popup-content">
+            <h3 id="popup-title">Tracks in Playlist</h3>
+            <ul id="track-list"></ul>
+            <button id="close-popup" class="popup-close-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Back Button to /suggest -->
+    <div id="back-button-container" style="margin-top: 20px;">
+        <a href="/suggest">
+            <button id="back-button" style="padding: 10px 20px; background-color: #00796b; color: white; border: none; border-radius: 4px; cursor: pointer;">Back to Suggest</button>
+        </a>
+    </div>
+
 </body>
-{% block scripts %}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const popup = document.getElementById('track-popup');
@@ -51,10 +63,11 @@
                             trackList.innerHTML = '';
                             data.tracks.forEach(track => {
                                 const listItem = document.createElement('li');
-                                listItem.innerHTML = `
-                                    <strong>${track.name}</strong> by ${track.artist}<br>
-                                    <img src="${track.image}" alt="${track.name}" style="width: 50px;">
-                                    <a href="${track.external_url}" target="_blank">Listen</a>
+                                listItem.classList.add('track-item');
+                                listItem.innerHTML = ` 
+                                    <span class="track-name"><strong>${track.name}</strong> by ${track.artist}</span><br>
+                                    <img src="${track.image}" alt="${track.name}" class="track-image">
+                                    <a href="${track.external_url}" target="_blank" class="track-link">Listen</a>
                                 `;
                                 trackList.appendChild(listItem);
                             });
@@ -65,110 +78,182 @@
             });
         });
     });
-    
 </script>
+
 <style>
-    /* Generale */
+    /* General Styles */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f4f7f9;
         color: #333;
         padding: 20px;
     }
-    
-    /* Titoli */
-    h2, h3 {
-        color: #2c3e50;
-        margin-bottom: 10px;
+
+    /* Playlist Section */
+    #playlist-container {
+        margin-top: 100px;
     }
-    
-    /* Lista Playlist */
-    ul {
+
+    #playlist-title {
+        color: #ffffff;
+        margin-bottom: 20px;
+    }
+
+    #playlist-list {
         list-style: none;
         padding: 0;
     }
-    
-    li {
-        background: #ffffff;
-        margin-bottom: 10px;
-        padding: 10px 15px;
-        border-radius: 12px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: background 0.3s, transform 0.3s;
+
+    .playlist-item {
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
     }
-    
-    li:hover {
-        background: #e0f7fa;
-        transform: scale(1.02);
+
+    .playlist-item:hover {
+        background-color: #e0f7fa;
+        transform: scale(1.05);
     }
-    
-    a.playlist-item {
+
+    .playlist-link {
         text-decoration: none;
-        color: #00796b;
+        color: #000000;
         font-weight: bold;
         display: block;
     }
-    
-    /* Form Creazione Playlist */
 
-    
-
-   
-    
-    button:hover {
-        background: #004d40;
+    .playlist-link:hover {
+        color: #004d40;
     }
-    
-    /* Popup */
+
+    /* Playlist Creation Form */
+    #create-playlist-title {
+        color: #ffffff;
+        margin-top: 40px;
+    }
+
+    #create-playlist-form {
+        margin-top: 10px;
+    }
+
+    #playlist-name-label {
+        font-weight: bold;
+        color: #f9f9f9;
+    }
+
+    #playlist-name-input {
+        padding: 8px;
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    #create-playlist-btn {
+        background-color: #00796b;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    #create-playlist-btn:hover {
+        background-color: #004d40;
+    }
+
+    /* Popup Styles */
     .popup {
         display: none;
         position: fixed;
         z-index: 1000;
-        padding-top: 60px;
-        left: 0;
         top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        overflow: auto;
         background-color: rgba(0, 0, 0, 0.7);
+        overflow: auto;
+        padding-top: 60px;
+        animation: fadeIn 0.5s ease-in-out;
     }
-    
+
     .popup-content {
-        background-color: #fefefe;
-        margin: auto;
+        background-color: white;
+        margin: 5% auto;
         padding: 20px;
-        border-radius: 16px;
-        width: 90%;
-        max-width: 500px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        animation: fadeIn 0.4s;
-    }
-    
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    
-    /* Lista tracce */
-    #track-list li {
-        margin-bottom: 15px;
-    }
-    
-    #track-list img {
-        margin-top: 5px;
         border-radius: 8px;
+        width: 80%;
+        max-width: 600px;
     }
-    
-    /* Bottone Close */
-    #close-popup {
+
+    #popup-title {
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        color: #2c3e50;
+    }
+
+    /* Track List Styles */
+    #track-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .track-item {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-radius: 6px;
+    }
+
+    .track-name {
+        font-weight: bold;
+    }
+
+    .track-image {
+        margin-top: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+    }
+
+    .track-link {
+        color: #00796b;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .track-link:hover {
+        color: #004d40;
+    }
+
+    /* Close Button Styles */
+    .popup-close-btn {
         margin-top: 20px;
-        background: #e53935;
+        background-color: #e53935;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
     }
-    
-    #close-popup:hover {
-        background: #b71c1c;
+
+    .popup-close-btn:hover {
+        background-color: #b71c1c;
     }
-    </style>
-    </style>
-{% endblock %}
+
+    /* FadeIn Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
 {% endblock %}
