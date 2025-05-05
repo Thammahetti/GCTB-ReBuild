@@ -2,22 +2,27 @@
 
 {% block content %}
 <body style="margin-top: 100px;">
-    
-    <div id="playlist-container">
-        <h2 id="playlist-title">Le tue Playlist</h2>
-        <ul id="playlist-list">
-            {% for playlist in playlists %}
-                <li class="playlist-item" id="playlist-{{ playlist.id }}" data-playlist-id="{{ playlist.id }}">
-                    <a href="#" id="playlist-link-{{ playlist.id }}" class="playlist-link">{{ playlist.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
 
-        <h3 id="create-playlist-title">Crea Nuova Playlist</h3>
+    <div id="playlist-container">
+        <h2 id="playlist-title">Your Playlists</h2>
+        
+        {% if playlists|length == 0 %}
+            <p>No playlists created yet. Start creating some!</p>
+        {% else %}
+            <ul id="playlist-list">
+                {% for playlist in playlists %}
+                    <li class="playlist-item" id="playlist-{{ playlist.id }}" data-playlist-id="{{ playlist.id }}">
+                        <a href="#" id="playlist-link-{{ playlist.id }}" class="playlist-link">{{ playlist.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <h3 id="create-playlist-title">Create Playlist</h3>
         <form method="POST" action="/create_playlist" id="create-playlist-form">
-            <label for="playlist_name" id="playlist-name-label">Nome Playlist:</label>
+            <label for="playlist_name" id="playlist-name-label">Name of the Playlist:</label>
             <input type="text" name="playlist_name" id="playlist-name-input" required>
-            <button type="submit" id="create-playlist-btn">Crea Playlist</button>
+            <button type="submit" id="create-playlist-btn">Create Playlist</button>
         </form>
     </div>
 

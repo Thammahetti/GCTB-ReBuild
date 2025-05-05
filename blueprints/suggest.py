@@ -121,7 +121,7 @@ def add_track_to_playlist():
             db.session.add(new_track)
             db.session.commit()
 
-            return jsonify({'message': f'Brano {track["name"]} aggiunto con successo alla playlist {playlist.name}'}), 200
+            return render_template('suggest.html')
 
         elif new_playlist_name:  # New playlist creation
             # Create a new Playlist_suggested object

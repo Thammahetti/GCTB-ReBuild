@@ -7,20 +7,20 @@
 <div style="margin-top: 100px;">
     <!-- Form di suggerimento brani -->
     <form method="POST" action="/suggest" class="suggest-container">
-        <label for="artist_name">Artista:</label>
-        <input type="text" name="artist_name" placeholder="Inserisci un artista" />
+        <label for="artist_name">Artist:</label>
+        <input type="text" name="artist_name" placeholder="Artist " />
 
-        <label for="track_name">Brano:</label>
-        <input type="text" name="track_name" placeholder="Inserisci un brano" />
+        <label for="track_name">Track:</label>
+        <input type="text" name="track_name" placeholder="Track" />
 
-        <label for="genre">Genere:</label>
-        <input type="text" name="genre" placeholder="Inserisci un genere" />
+        <label for="genre">Type:</label>
+        <input type="text" name="genre" placeholder="Type" />
 
-        <button type="submit">Suggerisci</button>
+        <button type="submit">Suggest</button>
     </form>
 
     {% if recommendations %}
-    <h2>Brani suggeriti:</h2>
+    <h2>Suggested songs:</h2>
 
     <div class="spotify-playlists">
         <div class="list">
@@ -56,8 +56,8 @@
       <h2 id="popup-title"></h2>
       <p id="popup-artist"></p>
       <p id="popup-album"></p>
-      <a href="#" id="popup-spotify-link" target="_blank">Ascolta su Spotify</a>
-      <button type="button" id="open-playlist-popup" class="btn-add-playlist">Aggiungi alla Playlist</button>
+      <a href="#" id="popup-spotify-link" target="_blank">listen on Spotify</a>
+      <button type="button" id="open-playlist-popup" class="btn-add-playlist">Add to the Playlist</button>
     </div>
   </div>
 </div>
@@ -75,13 +75,13 @@
       <!-- List of existing playlists -->
       <label for="playlist_option">Scegli una playlist:</label>
       <select name="playlist_option" id="playlist_option">
-          <option value="">-- Seleziona una playlist --</option>
+          <option value="">-- Select a playlist --</option>
           {% for playlist in user_playlists_suggested %}
           <option value="{{ playlist.id }}">{{ playlist.name }}</option>
       {% endfor %}
       </select>
   
-      <button type="submit" class="btn-add-playlist" style="margin-top: 20px;">Conferma Aggiunta</button>
+      <button type="submit" class="btn-add-playlist" style="margin-top: 20px;">Confirm</button>
   </form>
   </div>
 </div>
@@ -98,7 +98,7 @@
 <!-- Redirect Button to Playlist Page -->
 <div style="margin-top: 20px;">
   <a href="/playlists">
-    <button class="btn btn-primary">Vai alle tue Playlist</button>
+    <button class="btn btn-primary">Go to your Playlists</button>
   </a>
 </div>
 

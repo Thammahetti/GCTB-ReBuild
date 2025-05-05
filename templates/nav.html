@@ -39,6 +39,7 @@
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% if session.get('user_id') %}  <!-- Check if the user is logged in to the app -->
                 
+                        <li><a class="dropdown-item" href="{{url_for('home.home1')}}">Home</a></li>
                         <li><a class="dropdown-item" href="{{url_for('home.my_playlists')}}">Playlist</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout from App</a></li>
                         
