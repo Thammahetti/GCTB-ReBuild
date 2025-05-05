@@ -12,7 +12,7 @@ def brani_playlist():
 
     tracks = get_tracks_from_playlist(playlist_id)
     if not tracks:
-        return "Nessun brano trovato", 404
+        return "Nessun brano trovato", 404 
 
     return render_template('brani_playlist.html', tracks=tracks, playlist_id=playlist_id)
 
