@@ -38,14 +38,14 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% if session.get('user_id') %}  <!-- Check if the user is logged in to the app -->
-                        <li><a class="dropdown-item" href="{{ url_for('main_page.main_home') }}">Profile</a></li>
+                
                         <li><a class="dropdown-item" href="{{url_for('home.my_playlists')}}">Playlist</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout from App</a></li>
                         
                         {% if session.get('spotify_token') %}  <!-- Check if the user is logged into Spotify -->
                             <li><a class="dropdown-item" href="{{ url_for('auth.logout_spotify') }}">Logout from Spotify</a></li>
                         {% else %}
-                            <li><a class="dropdown-item" href="{{ url_for('auth.login_spotify') }}">Login to Spotify</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.login_spotify') }}">Connect to Spotify</a></li>
                         {% endif %}
                     {% else %}
                         <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Login to App</a></li>
