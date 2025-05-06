@@ -6,7 +6,6 @@ from services.model import db, User
 main_bp = Blueprint('main_page', __name__)
 
 
-
 @main_bp.route('/home', endpoint='main_home')
 @login_required
 def home():
